@@ -8,7 +8,7 @@ ageFallback: 17
 
 I'm a {{age}} year old software engineer from California, USA. To quickly explain who I am: *I love music, cars, shows, YouTube, movies, anime, gaming, guns, food, traveling, and most importantly - to have a good time. Also, I'm Asian-American.*
 
-I love building things in general, from automation and gaming, to reverse engineering and hardware.
+I love building things in general, from automation and gaming, to reverse engineering and hardware. I have been encorporating AI (ChatGPT, Claude) as a tool to help me become the best developer I can.
 
 A good software engineer uplifts the people around them, learns, and thinks ahead. I'm interested in working with others who care, and to work on hard difficult tasks that push me to do things I have never done before.
 
@@ -40,7 +40,7 @@ https://www.roblox.com/games/101002292692997/TF26
 
 In 2026, I worked on Tactical Futbol, a Roblox game with over 800+ thousand visits, as a anti-cheat developer who made complex analytics and networking.
 
-- created a custom preprocessor macro system with completely randomized decoding / encoding schemes in Python
+- used AI to create a custom preprocessor macro system with completely randomized decoding / encoding schemes in Python
 
 - analytics powered by Axiom accessible completely on the web and real-time as compared to discord webhooks 
 
