@@ -1,0 +1,34 @@
+# Portfolio requirements
+
+- Content is written by the owner in Markdown. Preserve their wording unless
+  editing is explicitly requested; do not invent professional or personal claims.
+- Home covers what the owner does and their experience.
+- Hiring & contact covers contact methods, freelance rules, timezone, and availability.
+- Work showcases the owner's images, videos, and descriptions.
+- Public projects is a direct link to https://git.blastbrean.com. Do not add a
+  separate listing, repository feed, or content beneath a projects section.
+- The production origin is https://blastbrean.com. Keep deployment disabled until
+  the owner requests it.
+
+## Responsive scaling — required for all future changes
+
+The entire site must be easy to view and navigate from mobile through tablet,
+desktop, and TV displays. Support intermediate sizes, not just named devices.
+
+- No page-wide horizontal overflow at narrow widths (including 320 CSS pixels).
+  Code blocks may scroll within their own bounds.
+- Navigation and controls wrap without clipping, overlap, or hover-only access.
+- Text remains readable with bounded line lengths, browser zoom, and enlarged text.
+- Images and video fit their containers and preserve their aspect ratios.
+- Large desktop and TV layouts retain readable text and restrained content widths;
+  text scales up for very large viewports.
+- Support touch, mouse, and keyboard navigation, with visible focus states.
+- The theme selector offers System, Light, and Dark. System follows the device
+  preference. Remember explicit choices and allow returning to System.
+- Dark mode uses lighter warm charcoal with dusty rose and lilac accents;
+  light mode uses cream, pale yellow, and blue. Keep the palettes distinct. Retain readable text, controls, links, and borders in either mode.
+- When visual browser testing is available, check representative widths of 320,
+  768, 1440, and 3840 CSS pixels and zoomed layouts. Report verification gaps.
+- Use the project's `pnpm check:visual` command for theme and layout iterations,
+  and inspect the generated `.preview/` screenshots rather than relying on build
+  success alone. Headless browser previews are authorized for this project.

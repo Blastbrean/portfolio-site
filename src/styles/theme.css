@@ -1,0 +1,48 @@
+/* Light: cream, butter yellow, and sky blue. Dark: warm charcoal, dusty rose and lilac. */
+:root {
+    color-scheme: light;
+    --background: #fffcf2;
+    --text: #29364a;
+    --link: #295c91;
+    --border: #d6dfeb;
+    --muted: #5f6d7f;
+    --surface: #fff6d9;
+    --accent: #deedff;
+    --hover-surface: #fff0bd;
+    --section-accent: #e6bf58;
+    --heading: #334f70;
+    --font-body: 'Public Sans Variable', system-ui, sans-serif;
+    --font-heading: 'Bricolage Grotesque Variable', 'Public Sans Variable', sans-serif;
+    font-family: var(--font-body);
+    color: var(--text);
+    background: var(--background);
+    line-height: 1.65;
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --background: #302e2c;
+    --text: #f3ede6;
+    --link: #dfc0ee;
+    --border: #625b55;
+    --muted: #c5bbb2;
+    --surface: #3b3734;
+    --accent: #513d3a;
+    --hover-surface: #4a3b47;
+    --section-accent: #efa99b;
+    --heading: #f4eae6;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --background: #302e2c;
+      --text: #f3ede6;
+      --link: #dfc0ee;
+      --border: #625b55;
+      --muted: #c5bbb2;
+      --surface: #3b3734;
+      --accent: #513d3a;
+      --hover-surface: #4a3b47;
+      --section-accent: #efa99b;
+      --heading: #f4eae6;
+    }
+  }

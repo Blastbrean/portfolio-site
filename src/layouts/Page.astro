@@ -1,0 +1,274 @@
+---
+import { site } from "../site";
+import "@fontsource-variable/bricolage-grotesque";
+import "@fontsource-variable/public-sans";
+import "@fontsource-variable/public-sans/wght-italic.css";
+import "../styles/theme.css";
+interface Props {
+  frontmatter: { title: string; tabTitle?: string; description?: string };
+}
+const { frontmatter } = Astro.props;
+const links = [
+  { href: "/", label: "Home" },
+  { href: "/contact/", label: "Hiring & contact" },
+  { href: "/work/", label: "Work" },
+  { href: "https://git.blastbrean.com/blastbrean", label: "Public projects" },
+];
+const current = Astro.url.pathname.replace(/\/$/, "") || "/";
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>
+      {frontmatter.tabTitle ?? `${frontmatter.title} · ${site.name}`}
+    </title>
+    <link rel="icon" href={site.favicon} />
+    {
+      frontmatter.description && (
+        <meta name="description" content={frontmatter.description} />
+      )
+    }
+    <link rel="canonical" href={canonical} />
+    <meta name="color-scheme" content="light dark" />
+    <script is:inline>
+      (() => {
+        const key = "blastbrean-theme";
+        const system = window.matchMedia("(prefers-color-scheme: dark)");
+        let preference = null;
+        const valid = (value) => ["light", "dark"].includes(value);
+        try {
+          const saved = localStorage.getItem(key);
+          if (valid(saved)) preference = saved;
+        } catch {
+          /* Keep system mode when browser storage is unavailable. */
+        }
+
+        const apply = () => {
+          const theme = preference ?? (system.matches ? "dark" : "light");
+          document.documentElement.dataset.theme = theme;
+          const control = document.getElementById("theme");
+          if (control) control.value = preference ?? "system";
+        };
+        // Apply before the page paints to avoid flashing the wrong theme.
+        apply();
+        system.addEventListener("change", apply);
+        window.addEventListener("storage", (event) => {
+          if (event.key !== key && event.key !== null) return;
+          preference = valid(event.newValue) ? event.newValue : null;
+          apply();
+        });
+        document.addEventListener("DOMContentLoaded", () => {
+          const control = document.getElementById("theme");
+          if (!control) return;
+          apply();
+          control.addEventListener("change", () => {
+            preference = valid(control.value) ? control.value : null;
+            apply();
+            try {
+              if (preference === null) localStorage.removeItem(key);
+              else localStorage.setItem(key, preference);
+            } catch {
+              /* The choice still works for the current page. */
+            }
+          });
+          control.closest(".theme-control").hidden = false;
+        });
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#content">Skip to content</a>
+    <header>
+      <nav aria-label="Main navigation">
+        {
+          links.map(({ href, label }) => (
+            <a
+              href={href}
+              aria-current={
+                current === (href.replace(/\/$/, "") || "/")
+                  ? "page"
+                  : undefined
+              }
+            >
+              {label}
+            </a>
+          ))
+        }
+      </nav>
+    </header>
+    <main id="content" tabindex="-1"><slot /></main>
+    <footer>
+      <label class="theme-control" hidden>
+        <span>Theme</span>
+        <select id="theme" name="theme">
+          <option value="system">System</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </label>
+    </footer>
+  </body>
+</html>
+<style is:global>
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100svh;
+    max-width: 72rem;
+    margin: auto;
+    padding: 0 1.25rem;
+    overflow-wrap: anywhere;
+  }
+  a {
+    color: var(--link);
+    text-underline-offset: 0.2em;
+  }
+  a:hover {
+    text-decoration-thickness: 2px;
+  }
+  :focus-visible {
+    outline: 3px solid var(--link);
+    outline-offset: 4px;
+  }
+  header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem 2rem;
+    flex-wrap: wrap;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .theme-control {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+  }
+  .theme-control[hidden] {
+    display: none;
+  }
+  .theme-control select {
+    font: inherit;
+    color: var(--text);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 0.35rem;
+    padding: 0.4rem 0.55rem;
+    cursor: pointer;
+  }
+  header {
+    border-top: 0.25rem solid var(--accent);
+  }
+  ::selection {
+    color: var(--text);
+    background: var(--accent);
+  }
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 0.5rem;
+  }
+  nav a {
+    color: inherit;
+    border-radius: 0.5rem;
+    padding: 0.4rem 0.7rem;
+    text-decoration: none;
+  }
+  nav a:hover {
+    background: var(--hover-surface);
+    text-decoration: underline;
+  }
+  nav a[aria-current="page"] {
+    background: var(--accent);
+    color: var(--heading);
+    font-weight: 700;
+  }
+  main {
+    flex: 1;
+    min-width: 0;
+    padding: 2rem 0 4rem;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+    font-optical-sizing: auto;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  h1 {
+    color: var(--heading);
+    font-size: clamp(2rem, 5vw, 3rem);
+    line-height: 1.15;
+    margin: 0 0 1.5rem;
+    letter-spacing: -0.025em;
+  }
+  h2 {
+    color: var(--heading);
+    border-left: 0.25rem solid var(--section-accent);
+    padding-left: 0.65rem;
+    line-height: 1.3;
+    margin-top: 2.5rem;
+  }
+  p,
+  ul,
+  ol,
+  blockquote {
+    max-width: 68ch;
+  }
+  img,
+  video {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+  pre {
+    overflow-x: auto;
+    padding: 1rem;
+  }
+  footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 1.5rem 0;
+    border-top: 1px solid var(--border);
+    font-size: 0.9rem;
+  }
+  .empty {
+    color: var(--muted);
+  }
+  .skip {
+    position: absolute;
+    left: 1rem;
+    top: -5rem;
+    background: var(--background);
+    padding: 0.5rem;
+  }
+  .skip:focus {
+    top: 0.5rem;
+  }
+  @media (max-width: 40rem) {
+    header {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+    main {
+      padding-top: 1.5rem;
+    }
+  }
+  @media (min-width: 160rem) {
+    :root {
+      font-size: clamp(1.125rem, 0.8vw, 1.5rem);
+    }
+  }
+</style>

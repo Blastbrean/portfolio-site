@@ -1,0 +1,45 @@
+---
+import type { MarkdownInstance } from 'astro';
+import Page from './Page.astro';
+interface WorkEntry {
+  title: string;
+  draft?: boolean;
+  order?: number;
+  image?: string;
+  imageAlt?: string;
+  video?: string;
+  videoPoster?: string;
+  videoCaptions?: string;
+  repository?: string;
+}
+const entries = Object.values(import.meta.glob<MarkdownInstance<WorkEntry>>('../work/*.md', { eager: true }))
+  .filter(({ frontmatter }) => frontmatter.draft !== true)
+  .sort((a, b) => (a.frontmatter.order ?? 0) - (b.frontmatter.order ?? 0) || a.frontmatter.title.localeCompare(b.frontmatter.title));
+---
+<Page frontmatter={Astro.props.frontmatter}>
+  <slot />
+  {entries.length === 0 && <p class="empty">No work samples published yet.</p>}
+  <div class="gallery">
+    {entries.map(({ frontmatter: work, Content }) => (
+      <article class="work-entry">
+        {work.image && <img src={work.image} alt={work.imageAlt ?? ''} loading="lazy" />}
+        {work.video && (
+          <video controls playsinline preload="metadata" poster={work.videoPoster} aria-label={work.title}>
+            <source src={work.video} />
+            {work.videoCaptions && <track kind="captions" src={work.videoCaptions} srclang="en" label="English" default />}
+            <a href={work.video}>Download video</a>
+          </video>
+        )}
+        <h2>{work.title}</h2>
+        <Content />
+        {work.repository && <p><a href={work.repository}>Source code</a></p>}
+      </article>
+    ))}
+  </div>
+</Page>
+<style>
+  .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 28rem), 1fr)); gap: 3rem 2rem; margin-top: 2rem; }
+  .work-entry { min-width: 0; border-top: 1px solid var(--border); padding-top: 1.5rem; }
+  .work-entry h2 { margin-top: 1rem; }
+  .work-entry img, .work-entry video { width: 100%; max-height: 32rem; object-fit: contain; background: var(--surface); }
+</style>
