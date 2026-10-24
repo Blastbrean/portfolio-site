@@ -93,9 +93,37 @@ export async function checkNavigation(browser, origin, output, engine = 'chromiu
       // Recover from a page restored from Safari's back/forward cache.
       await page.evaluate(() => dispatchEvent(new PageTransitionEvent('pageshow', { persisted: true })));
       await moving();
+      if (name === 'desktop') {
+        // Reproduce navigation after a hard refresh with animations enabled.
+        // Earlier checks use reduced motion, which masks snapshot artifacts.
+        await page.emulateMedia({ reducedMotion: 'no-preference' });
+        await page.reload();
+        await page.locator('.personal-background[data-ready="true"]').waitFor();
+        await moving();
+        await page.evaluate(() => {
+          window.transitionResults = [];
+          window.refreshBackground = document.querySelector('.personal-background');
+          document.addEventListener('astro:before-swap', event => {
+            event.viewTransition.ready.then(
+              () => window.transitionResults.push('snapshot'),
+              () => window.transitionResults.push('skipped'),
+            );
+          });
+        });
+        for (const label of ['Work', 'Home', 'Projects', 'Contact']) {
+          await page.getByRole('navigation').getByRole('link', { name: label, exact: true }).click();
+          await page.waitForFunction(expected => document.querySelector('nav [aria-current="page"]')?.textContent.trim() === expected, label);
+          await page.waitForFunction(() => !document.getAnimations().length);
+          assert.ok(await page.evaluate(() => refreshBackground === document.querySelector('.personal-background')));
+          assert.equal(await page.locator('main').evaluate(element => getComputedStyle(element).viewTransitionName), 'none');
+          assert.equal(await page.locator('html').getAttribute('data-theme'), chosenTheme);
+          await moving();
+        }
+        assert.deepEqual(await page.evaluate(() => transitionResults), ['skipped', 'skipped', 'skipped', 'skipped']);
+      }
       assert.deepEqual(errors, []);
       await context.close();
     }
   }
-  console.log(`${engine}: ${checks} navigation checks passed with continuous motion, pause/Space, history, and consistent theme controls.`);
+  console.log(`${engine}: ${checks} navigation checks and 8 post-refresh transitions passed with continuous motion, pause/Space, history, and consistent theme controls.`);
 }

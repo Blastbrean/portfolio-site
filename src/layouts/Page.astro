@@ -29,6 +29,22 @@ const previewImage = new URL(site.previewImage, Astro.site);
 <html lang="en">
   <head>
     <ClientRouter />
+    <script>
+      // Chromium can include the moving backdrop in transparent view-transition
+      // snapshots. Animate the live content instead, keeping the backdrop separate.
+      document.addEventListener("astro:before-swap", (event) => {
+        // Skipping rejects `ready` by design; handle that expected rejection.
+        void event.viewTransition.ready.catch(() => {});
+        event.viewTransition.skipTransition();
+      });
+      document.addEventListener("astro:after-swap", () => {
+        if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        document.getElementById("content")?.animate(
+          [{ opacity: 0 }, { opacity: 1 }],
+          { duration: 160, easing: "ease-out" },
+        );
+      });
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>
@@ -134,7 +150,7 @@ const previewImage = new URL(site.previewImage, Astro.site);
       </label>
       <button id="background-toggle" type="button" hidden>Pause background</button>
     </header>
-    <main transition:name="content" transition:animate="fade" id="content" tabindex="-1"><Fragment set:html={renderedContent} /></main>
+    <main id="content" tabindex="-1"><Fragment set:html={renderedContent} /></main>
   </body>
 </html>
 <style is:global>
