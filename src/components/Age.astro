@@ -1,6 +1,0 @@
----
-import { PRIVATE_BIRTH_DATE } from 'astro:env/server';
-import { calculateAge } from '../lib/age';
-const age = PRIVATE_BIRTH_DATE ? calculateAge(PRIVATE_BIRTH_DATE) : undefined;
----
-{age !== undefined && <p data-profile-age>I'm {age} years old.</p>}

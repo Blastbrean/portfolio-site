@@ -18,8 +18,11 @@
   and pause state during page navigation. Use a small pre-rendered texture, with
   no live SVG or full-screen blur. Random album choices come from locally cached
   catalogs for an editable artist list; do not fetch music APIs on page load.
-- The production origin is https://blastbrean.com. Keep deployment disabled until
-  the owner requests it.
+- The production origin is https://blastbrean.com. GitHub Pages publishing is
+  configured for pushes, manual runs, and a daily age rebuild. Activating remote
+  Pages settings, the private birth-date secret, and DNS is a separate setup step.
+- Birth date stays in a private build secret. Publish only the computed age and
+  reject output containing the private date before uploading deployment artifacts.
 
 ## Responsive scaling — required for all future changes
 

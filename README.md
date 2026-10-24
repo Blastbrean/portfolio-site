@@ -1,7 +1,7 @@
 # blastbrean.com
 
 A static Astro portfolio. Content is Markdown; layouts handle presentation.
-No deployment is enabled.
+A GitHub Pages deployment workflow is prepared; activate it using the setup below.
 
 The theme follows the visitor's system setting by default. The header's Theme
 selector offers System, Light, and Dark. Dark mode uses warm charcoal with dusty rose and lilac
@@ -142,16 +142,53 @@ Static output is written to `dist/`. Commit `pnpm-lock.yaml`; ignore `node_modul
 `.astro/`, and `dist/`. A future CI installation can use
 `pnpm install --frozen-lockfile` with a pinned pnpm version.
 
-## Future production setup
+## Publish with GitHub Pages
 
-`astro.config.mjs` sets `site: 'https://blastbrean.com'` with the root base path.
-This sets canonical URLs; it does not publish the site or change DNS.
+The repository is `Blastbrean/portfolio-site`. `.github/workflows/deploy.yml`
+builds and deploys on a push to `main`, on a manual run, and daily at 00:17 in
+America/Los_Angeles. The daily rebuild recalculates age from a private secret.
+These files are local until you commit and push them; no remote settings or DNS
+have been changed by this setup.
 
-When ready, configure GitHub Pages and its custom domain, then add an Astro
-GitHub Actions deployment workflow using Node 24 and pnpm. There is no active
-deployment workflow or CNAME file in this starter.
+1. In the repository's **Settings → Secrets and variables → Actions**, create a
+   **repository secret** named `PRIVATE_BIRTH_DATE`, with your date in `YYYY-MM-DD`
+   format. Enter it directly on GitHub. Do not put it in repository files or chat.
+2. In **Settings → Pages → Build and deployment**, select **GitHub Actions**.
+3. In the same Pages settings, set **Custom domain** to `blastbrean.com` and save.
+   The Astro config uses this domain and root paths; configure it before relying
+   on the temporary `github.io/portfolio-site/` URL.
+4. At your DNS provider, point `blastbrean.com` at GitHub Pages. Use an
+   `ALIAS`/`ANAME` for `@` pointing to `Blastbrean.github.io`, or these four `A`
+   records for `@`:
 
-Guide: https://docs.astro.build/en/guides/deploy/github/
+   ```text
+   185.199.108.153
+   185.199.109.153
+   185.199.110.153
+   185.199.111.153
+   ```
+
+   For `www`, use a `CNAME` pointing to `Blastbrean.github.io`. Check existing DNS
+   records before replacing any. Once GitHub's DNS check passes and its certificate
+   is ready, enable **Enforce HTTPS** in Pages settings. With Actions publishing,
+   no `CNAME` file in the source tree is needed.
+5. Commit the source, workflow, catalog, and local images, then push `main`.
+   Follow the **Deploy portfolio** workflow in the Actions tab. Use **Run workflow**
+   to publish manually. Future pushes publish subsequent work samples too.
+
+The workflow pins Node 24 and pnpm 12.15.0. It checks the build output for the birth
+date before uploading the site. Only the generated `dist/` site is published.
+A missing birth-date secret fails deployment with a message that does not reveal
+its value. Your real date is never needed in Markdown or client JavaScript.
+
+GitHub's scheduled workflows are best effort and can be delayed. In public repos,
+GitHub disables schedules after 60 days without repository activity; re-enable the
+workflow in Actions if this happens. The age updates on the next successful
+scheduled, manual, or push deployment. No always-on backend is required.
+
+References: [Astro Pages deployment](https://docs.astro.build/en/guides/deploy/github/),
+[GitHub custom-domain DNS](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site),
+[GitHub scheduled workflows](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule).
 
 ## Personal background
 
@@ -204,18 +241,17 @@ kept in the music catalog.
 
 ## Private age display
 
-Home can show “I'm X years old.” when `PRIVATE_BIRTH_DATE` is configured. Copy
-`.env.example` to `.env` and fill in the date locally in `YYYY-MM-DD` format.
-`.env` is ignored by Git. In a deployment, set the same variable as a private CI
-or hosting build secret. Never use a `PUBLIC_` variable or put the date in Markdown.
-Leave the variable blank to omit the age; `showAge: true` in Home enables the display.
+Home uses `{{age}}` inside the introduction. `ageFallback: 17` in its frontmatter
+preserves your supplied age when no private date is configured locally. The
+production workflow requires the real private secret so the age can update.
+
+For local development, set `PRIVATE_BIRTH_DATE` in the Git-ignored `.env` file in
+`YYYY-MM-DD` format; `.env.example` shows the key. For publishing, add it as a
+GitHub Actions repository secret using the steps above. Never use a `PUBLIC_`
+variable or put the date in Markdown.
 
 Astro reads the secret only during page rendering at build time. Only the computed
 integer is rendered into HTML; neither the date nor a client-side age calculation
-is shipped. Age uses the America/Los_Angeles calendar (February 29 birthdays
-advance on March 1 in non-leap years).
-
-Because this is a static site, the age updates when the site is rebuilt and
-published. Once deployment is enabled, schedule a daily build and publish using
-the private secret; no deployment or scheduled publishing has been enabled here.
-Observers can infer a birthday by monitoring when the displayed age changes.
+is shipped. Age uses America/Los_Angeles (February 29 birthdays advance on March 1
+in non-leap years). The daily deployment rebuilds this static value. Observers can
+infer a birthday by monitoring when the displayed age changes.

@@ -1,11 +1,12 @@
 ---
 layout: ../layouts/Page.astro
 title: Home
+ageFallback: 17
 ---
 
-# blastbrean
+# blastbrean (he/him)
 
-I'm a 17 year old software engineer from California, USA. To briefly explain who I am: *I love music, cars, gaming, and to have a good time and I'm Asian-American.*
+I'm a {{age}} year old software engineer from California, USA. To quickly explain who I am: *I love music, cars, shows, YouTube, movies, anime, gaming, guns, food, traveling, and most importantly - to have a good time. Also, I'm Asian-American.*
 
 I love building things in general, from automation and gaming, to reverse engineering and hardware.
 

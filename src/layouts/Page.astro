@@ -1,13 +1,17 @@
 ---
 import { ClientRouter } from "astro:transitions";
-import Age from "../components/Age.astro";
+import { PRIVATE_BIRTH_DATE } from "astro:env/server";
+import { calculateAge } from "../lib/age";
 import Background from "../components/Background.astro";
 import { site } from "../site";
 import "../styles/theme.css";
 interface Props {
-  frontmatter: { title: string; tabTitle?: string; description?: string; showAge?: boolean };
+  frontmatter: { title: string; tabTitle?: string; description?: string; ageFallback?: number };
 }
 const { frontmatter } = Astro.props;
+const content = await Astro.slots.render('default');
+const age = PRIVATE_BIRTH_DATE ? calculateAge(PRIVATE_BIRTH_DATE) : frontmatter.ageFallback;
+const renderedContent = age === undefined ? content : content.replaceAll('{{age}}', `<span data-profile-age>${age}</span>`);
 const links = [
   { href: "/", label: "Home" },
   { href: "/work/", label: "Work" },
@@ -116,7 +120,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
       </label>
       <button id="background-toggle" type="button" hidden>Pause background</button>
     </header>
-    <main transition:name="content" transition:animate="fade" id="content" tabindex="-1"><slot />{frontmatter.showAge && <Age />}</main>
+    <main transition:name="content" transition:animate="fade" id="content" tabindex="-1"><Fragment set:html={renderedContent} /></main>
   </body>
 </html>
 <style is:global>

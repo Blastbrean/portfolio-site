@@ -1,0 +1,48 @@
+name: Deploy portfolio
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: '17 0 * * *'
+      timezone: America/Los_Angeles
+
+permissions:
+  contents: read
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v6
+      - name: Build and verify private age
+        uses: withastro/action@v6
+        env:
+          PRIVATE_BIRTH_DATE: ${{ secrets.PRIVATE_BIRTH_DATE }}
+        with:
+          node-version: '24'
+          package-manager: pnpm@12.15.0
+          build-cmd: >-
+            node scripts/require-private-age.mjs &&
+            pnpm build &&
+            node scripts/check-published-privacy.mjs
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
