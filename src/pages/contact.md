@@ -21,7 +21,7 @@ I respond and check both actively.
 
 Exceptions apply on holidays, when I am sick, busy due to school, or on further notice.
 
-If there is no school, treat my weekends my avaliability.
+If there is no school, treat my weekends as my avaliability.
 
 Monday & Thursday: `7:30am - 9:00am` U `10:16am - 1:59pm` U `3:25pm - 10pm`
 
