@@ -1,4 +1,5 @@
-import { chromium } from 'playwright';
+import { chromium, webkit } from 'playwright';
+import { checkNavigation } from './check-navigation.mjs';
 import { createServer } from 'node:http';
 import { readFile, mkdir } from 'node:fs/promises';
 import { resolve, extname, sep } from 'node:path';
@@ -24,7 +25,28 @@ try {
   await mkdir(output, { recursive: true });
   await new Promise((done, reject) => { server.once('error', reject); server.listen(0, '127.0.0.1', done); });
   const origin = `http://127.0.0.1:${server.address().port}`;
-  browser = await chromium.launch({ headless: true });
+  const engine = process.argv.includes('--webkit') ? webkit : chromium;
+  const engineName = engine === webkit ? 'webkit' : 'chromium';
+  browser = await engine.launch({ headless: true });
+  const crawler = await browser.newContext({ javaScriptEnabled: false, userAgent: 'Mozilla/5.0 (compatible; Discordbot/2.0; +https://discordapp.com)' });
+  const crawlerPage = await crawler.newPage();
+  for (const route of ['/', '/work/', '/projects/', '/contact/']) {
+    await crawlerPage.goto(origin + route);
+    for (const property of ['og:title', 'og:description', 'og:url', 'og:image']) {
+      assert.ok(await crawlerPage.locator(`meta[property="${property}"]`).getAttribute('content'), `Missing ${property} on ${route}`);
+    }
+    const image = new URL(await crawlerPage.locator('meta[property="og:image"]').getAttribute('content'));
+    assert.equal(image.origin, 'https://blastbrean.com');
+    const response = await crawler.request.get(origin + image.pathname);
+    assert.equal(response.status(), 200);
+    assert.ok(response.headers()['content-type'].startsWith('image/jpeg'));
+    assert.ok((await response.body()).length > 1000);
+  }
+  await crawler.close();
+  console.log(`${engineName}: Discord metadata and preview image passed without JavaScript.`);
+  if (process.argv.includes('--navigation')) {
+    await checkNavigation(browser, origin, output, engineName);
+  } else {
   const sizes = { mobile: [320, 800], tablet: [768, 1024], desktop: [1440, 1000], tv: [3840, 2160] };
   let checks = 0;
   for (const theme of ['light', 'dark']) {
@@ -55,10 +77,10 @@ try {
           assert.equal(await page.getByRole('link', { name: 'GitHub', exact: true }).getAttribute('href'), 'https://github.com/Blastbrean');
         }
         const label = route === '/' ? 'home' : route.replaceAll('/', '');
-        await page.screenshot({ path: `${output}/${name}-${theme}-${label}.png`, fullPage: true, animations: 'disabled' });
+        await page.screenshot({ path: `${output}/${name}-${theme}-${label}.png`, fullPage: false, animations: 'disabled' });
         await page.evaluate(() => document.documentElement.style.fontSize = '200%');
         assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), `${name} ${theme} ${route}: enlarged text overflow`);
-        await page.screenshot({ path: `${output}/${name}-${theme}-${label}-enlarged.png`, fullPage: true, animations: 'disabled' });
+        await page.screenshot({ path: `${output}/${name}-${theme}-${label}-enlarged.png`, fullPage: false, animations: 'disabled' });
         await page.evaluate(() => document.documentElement.style.removeProperty('font-size'));
         checks++;
       }
@@ -101,74 +123,9 @@ try {
   await loadingPage.locator('.personal-background[data-ready="true"]').waitFor();
   assert.equal(await loadingPage.locator('.background-tilt').evaluate(element => getComputedStyle(element).opacity), '1');
   await loadingContext.close();
-  const motionContext = await browser.newContext({ reducedMotion: 'reduce' });
-  const motionPage = await motionContext.newPage();
-  await motionPage.goto(origin);
-  const background = motionPage.locator('.personal-background');
-  const grid = motionPage.locator('.background-grid');
-  await motionPage.getByRole('button', { name: 'Resume background' }).waitFor();
-  assert.equal(await background.getAttribute('data-paused'), 'true');
-  assert.equal(await grid.evaluate(element => element.getAnimations()[0].playState), 'paused');
-  await motionPage.locator('.personal-background[data-ready="true"]').waitFor();
-  assert.equal(await motionPage.locator('svg').count(), 0);
-  assert.equal(await background.evaluate(element => getComputedStyle(element).viewTransitionName), 'none');
-  assert.equal(await grid.evaluate(element => getComputedStyle(element).filter), 'none');
-  const selection = await background.evaluate(element => JSON.parse(element.dataset.selection));
-  assert.equal(new Set(selection).size, selection.length);
-  assert.equal(Number(await background.getAttribute('data-loaded-count')), selection.length);
-  const available = await background.evaluate(element => JSON.parse(element.dataset.catalog).flatMap(artist => artist.albums.map(album => album.image)));
-  assert.deepEqual([...selection].sort(), [...new Set(available)].sort());
-  await motionPage.getByRole('button', { name: 'Resume background' }).click();
-  assert.equal(await grid.evaluate(element => element.getAnimations()[0].playState), 'running');
-  // Seek the real animation to compare motion and the exact loop boundary.
-  const motion = await grid.evaluate(element => {
-    const animation = element.getAnimations()[0];
-    animation.pause();
-    const sample = time => {
-      animation.currentTime = time;
-      const local = new DOMMatrix(getComputedStyle(element).transform);
-      const tilt = new DOMMatrix(getComputedStyle(element.parentElement).transform);
-      return { x: local.m41 * tilt.a, y: local.m41 * tilt.b };
-    };
-    const duration = Number(animation.effect.getTiming().duration);
-    return { start: sample(0), halfway: sample(duration / 2), end: sample(duration) };
-  });
-  assert.ok(motion.halfway.x > motion.start.x && motion.halfway.y > motion.start.y);
-  assert.ok(Math.abs(motion.halfway.x - motion.halfway.y) < 0.01);
-  assert.ok(Math.abs(motion.end.x - motion.start.x) < 0.01);
-  await motionPage.getByRole('button', { name: 'Pause background' }).click();
-  assert.equal(await background.getAttribute('data-paused'), 'true');
-  await motionPage.locator('body').click({ position: { x: 5, y: 5 } });
-  await motionPage.keyboard.press('Space');
-  assert.equal(await background.getAttribute('data-paused'), 'false');
-  await motionPage.keyboard.press('Space');
-  assert.equal(await background.getAttribute('data-paused'), 'true');
-  await motionPage.locator('#theme').focus();
-  await motionPage.keyboard.press('Space');
-  assert.equal(await background.getAttribute('data-paused'), 'true');
-  await motionPage.keyboard.press('Escape');
-  await motionPage.getByRole('button', { name: 'Resume background' }).click();
-  await grid.evaluate(element => {
-    const animation = element.getAnimations()[0];
-    animation.currentTime = 20000;
-    animation.play();
-    window.savedBackground = element.parentElement.parentElement;
-    window.savedTexture = element.style.backgroundImage;
-    window.savedDocument = document;
-  });
-  await motionPage.locator('#theme').selectOption('dark');
-  await motionPage.getByRole('link', { name: 'Work', exact: true }).click();
-  await motionPage.waitForURL('**/work/');
-  await motionPage.getByRole('heading', { name: 'Work', exact: true }).waitFor();
-  assert.ok(await motionPage.evaluate(() => window.savedDocument === document));
-  assert.ok(await motionPage.evaluate(() => window.savedBackground === document.querySelector('.personal-background')));
-  assert.ok(await grid.evaluate(element => element.style.backgroundImage === window.savedTexture));
-  assert.ok(await grid.evaluate(element => Number(element.getAnimations()[0].currentTime) >= 20000));
-  assert.equal(await motionPage.locator('html').getAttribute('data-theme'), 'dark');
-  await motionPage.getByRole('button', { name: 'Pause background' }).click();
-  assert.equal(await background.getAttribute('data-paused'), 'true');
-  await motionContext.close();
-  console.log(`Passed ${checks} page/theme/viewport checks plus ${intermediateChecks} intermediate/landscape layout checks, saved theme overrides, live system changes, diagonal grid movement, seamless looping, Space shortcut, reduced motion, and uninterrupted background navigation. Screenshots: ${output}`);
+  await checkNavigation(browser, origin, output, engineName);
+  console.log(`Passed ${checks} page/theme/viewport checks plus ${intermediateChecks} intermediate/landscape layout checks, saved theme overrides, live system changes, diagonal grid movement, Space shortcut, reduced motion, and uninterrupted background navigation. Screenshots: ${output}`);
+  }
 } finally {
   await browser?.close();
   await new Promise(done => server.close(done));

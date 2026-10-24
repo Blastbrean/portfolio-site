@@ -9,7 +9,8 @@
     "preview": "astro preview",
     "check:visual": "node scripts/sync-music.mjs --if-needed && astro build && node scripts/check-visuals.mjs",
     "browser:install": "playwright install chromium",
-    "sync:music": "node scripts/sync-music.mjs"
+    "sync:music": "node scripts/sync-music.mjs",
+    "check:safari": "node scripts/sync-music.mjs --if-needed && astro build && node scripts/check-visuals.mjs --webkit --navigation"
   },
   "engines": {
     "node": ">=24 <25"

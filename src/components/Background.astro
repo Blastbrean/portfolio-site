@@ -24,7 +24,25 @@ import catalog from "../data/music-catalog.json";
     const grid = background.querySelector<HTMLElement>(".background-grid")!;
     const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
     let paused = reducedMotion.matches;
-    let animation: Animation | undefined;
+    let frame: number | undefined;
+    let lastTime: number | undefined;
+    let distance = 0;
+    let phase = 0;
+    let navigating = false;
+    const draw = (time: number) => {
+      frame = undefined;
+      if (paused || document.hidden || navigating || !distance) {
+        lastTime = undefined;
+        return;
+      }
+      if (lastTime !== undefined) {
+        // Resume from the same position after a stall or a hidden tab.
+        phase = (phase + Math.min(Math.max(time - lastTime, 0), 64) * 0.022) % distance;
+      }
+      lastTime = time;
+      grid.style.transform = `translate3d(${phase - distance / 2}px, 0, 0)`;
+      frame = requestAnimationFrame(draw);
+    };
     const sync = () => {
       const toggle =
         document.querySelector<HTMLButtonElement>("#background-toggle");
@@ -35,11 +53,14 @@ import catalog from "../data/music-catalog.json";
         toggle.setAttribute("aria-keyshortcuts", "Space");
         toggle.title = "Space pauses or resumes the background";
       }
-      const stopped = paused || document.hidden;
+      const stopped = paused || document.hidden || navigating;
       background.dataset.paused = String(stopped);
-      if (animation) {
-        if (stopped) animation.pause();
-        else animation.play();
+      if (stopped) {
+        if (frame !== undefined) cancelAnimationFrame(frame);
+        frame = undefined;
+        lastTime = undefined;
+      } else if (distance && frame === undefined) {
+        frame = requestAnimationFrame(draw);
       }
     };
     document.addEventListener("click", (event) => {
@@ -73,10 +94,22 @@ import catalog from "../data/music-catalog.json";
       paused = reducedMotion.matches;
       sync();
     });
-    document.addEventListener("visibilitychange", sync);
-    // Keep the Animation object with the persistent node across page changes.
-    document.addEventListener("astro:after-swap", sync);
-    document.addEventListener("astro:page-load", sync);
+    const restart = () => {
+      if (frame !== undefined) cancelAnimationFrame(frame);
+      frame = undefined;
+      lastTime = undefined;
+      navigating = false;
+      sync();
+    };
+    document.addEventListener("visibilitychange", restart);
+    window.addEventListener("pageshow", restart);
+    document.addEventListener("astro:before-swap", () => {
+      navigating = true;
+      sync();
+    });
+    // Schedule on the new document after Safari moves the persistent element.
+    document.addEventListener("astro:after-swap", restart);
+    document.addEventListener("astro:page-load", restart);
     sync();
 
     // Shuffle the complete catalog once per tab. Navigation preserves this texture.
@@ -115,7 +148,8 @@ import catalog from "../data/music-catalog.json";
       const context = canvas.getContext("2d");
       if (!context) return;
       // Bake the blur once into a tiny texture; no live SVG or full-screen filter.
-      context.filter = "blur(3px)";
+      const supportsBlur = "filter" in context;
+      if (supportsBlur) context.filter = "blur(3px)";
       for (let index = 0; index < columns * rows; index++) {
         const image = images[index % images.length];
         const side = Math.min(image.naturalWidth, image.naturalHeight);
@@ -131,14 +165,25 @@ import catalog from "../data/music-catalog.json";
           cell - 6,
         );
       }
+      if (!supportsBlur) {
+        // Safari versions without canvas filters still get a softened texture.
+        const soft = document.createElement("canvas");
+        soft.width = Math.max(1, Math.floor(canvas.width / 4));
+        soft.height = Math.max(1, Math.floor(canvas.height / 4));
+        const softContext = soft.getContext("2d");
+        if (softContext) {
+          softContext.drawImage(canvas, 0, 0, soft.width, soft.height);
+          context.clearRect(0, 0, canvas.width, canvas.height);
+          context.imageSmoothingEnabled = true;
+          context.imageSmoothingQuality = "high";
+          context.drawImage(soft, 0, 0, canvas.width, canvas.height);
+        }
+      }
       background.style.setProperty("--period", `${columns * 220}px`);
       grid.style.backgroundSize = `${columns * 220}px ${rows * 220}px`;
       grid.style.backgroundImage = `url("${canvas.toDataURL("image/webp", 0.75)}")`;
-      const distance = columns * 220;
-      animation = grid.animate([
-        { transform: `translateX(${-distance / 2}px)` },
-        { transform: `translateX(${distance / 2}px)` },
-      ], { duration: columns * 10000, iterations: Infinity, easing: "linear" });
+      distance = columns * 220;
+      grid.style.transform = `translate3d(${-distance / 2}px, 0, 0)`;
       sync();
       background.dataset.loadedCount = String(images.length);
       background.dataset.ready = "true";
