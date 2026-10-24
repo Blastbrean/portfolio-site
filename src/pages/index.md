@@ -5,13 +5,13 @@ title: Home
 
 # blastbrean
 
-I'm a 17 year old software engineer from California, USA.
+I'm a 17 year old software engineer from California, USA. To briefly explain who I am: *I love music, cars, gaming, and to have a good time and I'm Asian-American.*
 
 I love building things in general, from automation and gaming, to reverse engineering and hardware.
 
 A good software engineer uplifts the people around them, learns, and thinks ahead. I'm interested in working with others who care, and to work on hard difficult tasks that push me to do things I have never done before.
 
-Currently, I want to work as a game developer or freelance on game related tasks. I have completely moved away from scripting (cheat-wise) on Roblox.
+Currently, I want to work as a game developer or freelance on game related tasks. I have completely moved away from scripting (cheat-wise) on Roblox. 
 
 ## Formal Experience
 
@@ -47,6 +47,8 @@ In 2026, I worked on Tactical Futbol, a Roblox game with over 800+ thousand visi
 
 - uses Rojo and Git to sync with Roblox Studio, worked completely outside of game access
 
+- stress-tested under clients under mobile & desktop, high or low ping, and in more unreasonable scenarios like high jitter / packet loss; where BAC shows no delay or slow down
+
 - created a dynamic detection system which sends detections to clients on the fly
 
 - created a quick discord bot using Cloudflare Workers and Node.JS to manage rollbacks, unbans, and bans communicated through datastore and BanAPI
@@ -71,7 +73,7 @@ https://git.blastbrean.com/lycoris
 
 In 2023-2025, I worked on Lycoris, a Luau script hub with over 5000+ buyers, as a owner who successfully reached top 1 positions in Deepwoken and Type Soul.
 
-- created a builder, logger, and animation visualizer system to create auto parry timings in a easy way never seen before
+- created a builder, logger, and animation visualizer system to create auto parry timings to deflect moves automatically
 
 - developed a state-of-the-art module system to create auto parry timings within code for complex moves
 
@@ -80,5 +82,21 @@ In 2023-2025, I worked on Lycoris, a Luau script hub with over 5000+ buyers, as 
 - developed automation with complex farms working across server joins and emergency fallbacks, pushed it to be way faster than it was originally
 
 - developed a complex discord bot to manage the server with long-lived interactions in Rust & a protection layer on top of Luarmor for analytics in Go and Pocketbase
+
+- worked with other script developers to advance Deepwoken cheating, and timing creators to develop hundreds of move timings in a week
+
+### funnyhack
+
+In 2022, I developed a series of cheats under the funnyhack umbrella in C++ for CS:GO using bases like Qo0 and supremacy.
+
+- created a multipoint system using Valve's implementation of rendering capsules and boxes
+
+- created a backtracking system referencing Valve's implementation of the lag compensation system
+
+- replicated server animations on the client by bruteforcing my way, looking at how the client differed from the server, using data on a local server to compare
+
+- fixed prediction on the client including datamap compression due to deltas
+
+- overall, created HvH cheats on (2018) Legacy and legit cheats for Jailbreak and other community servers to gain a competitive edge
 
 [See my work](/work/) · [Contact](/contact/)
