@@ -1,0 +1,202 @@
+---
+import { site } from "../site";
+import catalog from "../data/music-catalog.json";
+---
+
+<div
+  class="personal-background"
+  aria-hidden="true"
+  data-paused="true"
+  data-catalog={JSON.stringify(catalog)}
+  data-photos={JSON.stringify(site.backgroundImages)}
+  transition:persist="personal-background"
+>
+  <div class="background-tilt">
+    <div class="background-grid"></div>
+  </div>
+</div>
+
+<script>
+  const background = document.querySelector<HTMLElement>(
+    ".personal-background",
+  );
+  if (background) {
+    const grid = background.querySelector<HTMLElement>(".background-grid")!;
+    const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+    let paused = reducedMotion.matches;
+    let animationTime: number | null = null;
+    const sync = () => {
+      const toggle =
+        document.querySelector<HTMLButtonElement>("#background-toggle");
+      if (toggle) {
+        toggle.hidden = false;
+        toggle.textContent = paused ? "Resume background" : "Pause background";
+        toggle.setAttribute("aria-pressed", String(paused));
+        toggle.setAttribute("aria-keyshortcuts", "Space");
+        toggle.title = "Space pauses or resumes the background";
+      }
+      background.dataset.paused = String(paused || document.hidden);
+    };
+    document.addEventListener("click", (event) => {
+      if ((event.target as Element)?.closest("#background-toggle")) {
+        paused = !paused;
+        sync();
+      }
+    });
+    document.addEventListener("keydown", (event) => {
+      if (
+        event.code !== "Space" ||
+        event.repeat ||
+        event.ctrlKey ||
+        event.metaKey ||
+        event.altKey ||
+        event.shiftKey
+      )
+        return;
+      const target = event.target as HTMLElement;
+      if (
+        target.closest(
+          'input, textarea, select, button, a, video, audio, summary, [contenteditable]:not([contenteditable="false"]), [role="button"], [role="textbox"], [role="combobox"]',
+        )
+      )
+        return;
+      event.preventDefault();
+      paused = !paused;
+      sync();
+    });
+    reducedMotion.addEventListener("change", () => {
+      paused = reducedMotion.matches;
+      sync();
+    });
+    document.addEventListener("visibilitychange", sync);
+    document.addEventListener("astro:before-swap", () => {
+      animationTime = Number(grid.getAnimations()[0]?.currentTime ?? 0);
+    });
+    document.addEventListener("astro:after-swap", () => {
+      const animation = grid.getAnimations()[0];
+      if (animation && animationTime !== null)
+        animation.currentTime = animationTime;
+      sync();
+    });
+    document.addEventListener("astro:page-load", sync);
+    sync();
+
+    // Shuffle the complete catalog once per tab. Navigation preserves this texture.
+    const catalog: { artist: string; albums: { image: string }[] }[] =
+      JSON.parse(background.dataset.catalog ?? "[]");
+    const photos: string[] = JSON.parse(background.dataset.photos ?? "[]");
+    const selected = [
+      ...new Set([
+        ...catalog.flatMap(({ albums }) => albums.map((album) => album.image)),
+        ...photos,
+      ]),
+    ];
+    for (let i = selected.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [selected[i], selected[j]] = [selected[j], selected[i]];
+    }
+    const load = (src: string) =>
+      new Promise<HTMLImageElement>((resolve, reject) => {
+        const image = new Image();
+        image.decoding = "async";
+        image.onload = () => resolve(image);
+        image.onerror = reject;
+        image.src = src;
+      });
+    Promise.allSettled(selected.map(load)).then((results) => {
+      const images = results.flatMap((result) =>
+        result.status === "fulfilled" ? [result.value] : [],
+      );
+      if (!images.length) return;
+      const columns = Math.ceil(Math.sqrt(images.length));
+      const rows = Math.ceil(images.length / columns);
+      const cell = 96;
+      const canvas = document.createElement("canvas");
+      canvas.width = columns * cell;
+      canvas.height = rows * cell;
+      const context = canvas.getContext("2d");
+      if (!context) return;
+      // Bake the blur once into a tiny texture; no live SVG or full-screen filter.
+      context.filter = "blur(3px)";
+      for (let index = 0; index < columns * rows; index++) {
+        const image = images[index % images.length];
+        const side = Math.min(image.naturalWidth, image.naturalHeight);
+        context.drawImage(
+          image,
+          (image.naturalWidth - side) / 2,
+          (image.naturalHeight - side) / 2,
+          side,
+          side,
+          (index % columns) * cell + 3,
+          Math.floor(index / columns) * cell + 3,
+          cell - 6,
+          cell - 6,
+        );
+      }
+      background.style.setProperty("--period", `${columns * 220}px`);
+      background.style.setProperty("--duration", `${columns * 10}s`);
+      grid.style.backgroundSize = `${columns * 220}px ${rows * 220}px`;
+      grid.style.backgroundImage = `url("${canvas.toDataURL("image/webp", 0.75)}")`;
+      background.dataset.loadedCount = String(images.length);
+      background.dataset.ready = "true";
+      background.dataset.selection = JSON.stringify(selected);
+    });
+  }
+</script>
+
+<style>
+  .personal-background {
+    view-transition-name: none !important;
+    --period: 440px;
+    --duration: 60s;
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+    background: var(--background);
+  }
+  .background-tilt {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: calc(150vmax + var(--period));
+    height: calc(150vmax + var(--period));
+    transform: translate(-50%, -50%) rotate(45deg);
+    opacity: 0;
+    transition: opacity 600ms ease;
+  }
+  .personal-background[data-ready="true"] .background-tilt {
+    opacity: 1;
+  }
+  .background-grid {
+    width: 100%;
+    height: 100%;
+    background-size: 220px 220px;
+    background-repeat: repeat;
+    will-change: transform;
+    animation: drift var(--duration) linear infinite paused;
+  }
+  .personal-background[data-paused="false"] .background-grid {
+    animation-play-state: running;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .background-tilt {
+      transition: none;
+    }
+  }
+  @keyframes drift {
+    from {
+      transform: translateX(calc(var(--period) * -0.5));
+    }
+    to {
+      transform: translateX(calc(var(--period) * 0.5));
+    }
+  }
+  .personal-background::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--background-scrim);
+  }
+</style>

@@ -1,11 +1,9 @@
 ---
 layout: ../layouts/Page.astro
-title: Hiring & contact
+title: Contact
 ---
 
-# Hiring & contact
-
-## How to reach me
+# Contact
 
 <!-- Add your preferred contact method. Email syntax: [Email me](mailto:YOUR_ADDRESS). -->
 

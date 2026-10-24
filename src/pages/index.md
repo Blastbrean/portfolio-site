@@ -6,7 +6,7 @@ description: blastbrean — backend developer.
 
 # blastbrean
 
-I'm a backend developer.
+I'm a 
 
 <!-- Write in your own words: what you build, what interests you, and the work you want to do. -->
 
@@ -14,4 +14,4 @@ I'm a backend developer.
 
 <!-- Add roles, dates, responsibilities, or a short narrative here. -->
 
-[See my work](/work/) · [Hiring & contact](/contact/)
+[See my work](/work/) · [Contact](/contact/)

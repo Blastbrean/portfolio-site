@@ -3,10 +3,21 @@
 - Content is written by the owner in Markdown. Preserve their wording unless
   editing is explicitly requested; do not invent professional or personal claims.
 - Home covers what the owner does and their experience.
-- Hiring & contact covers contact methods, freelance rules, timezone, and availability.
+- Contact covers contact methods, freelance rules, timezone, and availability.
 - Work showcases the owner's images, videos, and descriptions.
-- Public projects is a direct link to https://git.blastbrean.com. Do not add a
-  separate listing, repository feed, or content beneath a projects section.
+- Navigation order is Home, Work, Projects, Contact.
+- Projects links to Forgejo at https://git.blastbrean.com and GitHub at
+  https://github.com/Blastbrean.
+- Use standard system fonts, explicit labels, and no decorative top bar.
+- Keep the theme selector near the top alongside navigation.
+- Use a narrow, centered reading column with left-aligned text and space above it.
+- Personal imagery repeats in a blurred grid tilted 45 degrees, continuously
+  scrolling down and right with no visible captions.
+  Keep text readable in both themes, provide pause/resume (including Space outside
+  interactive controls), and respect reduced motion. Preserve background position
+  and pause state during page navigation. Use a small pre-rendered texture, with
+  no live SVG or full-screen blur. Random album choices come from locally cached
+  catalogs for an editable artist list; do not fetch music APIs on page load.
 - The production origin is https://blastbrean.com. Keep deployment disabled until
   the owner requests it.
 

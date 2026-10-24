@@ -3,7 +3,7 @@
 A static Astro portfolio. Content is Markdown; layouts handle presentation.
 No deployment is enabled.
 
-The theme follows the visitor's system setting by default. The footer's Theme
+The theme follows the visitor's system setting by default. The header's Theme
 selector offers System, Light, and Dark. Dark mode uses warm charcoal with dusty rose and lilac
 accents; light mode uses cream, pale yellow, and blue. Explicit choices are remembered
 in the browser and shared across tabs. System follows live OS changes. Without
@@ -28,11 +28,12 @@ by your installed Astro version when finished.
 | Page | File |
 | --- | --- |
 | Home: what you do and your experience | `src/pages/index.md` |
-| Hiring, contact, freelancing, timezone, availability | `src/pages/contact.md` |
+| Contact, freelancing, timezone, availability | `src/pages/contact.md` |
 | Work gallery introduction | `src/pages/work.md` |
+| Forgejo and GitHub links | `src/pages/projects.md` |
 
-Public projects links directly to https://git.blastbrean.com from the navigation;
-there is no separate project listing on this site.
+Navigation is ordered Home, Work, Projects, Contact. The Projects page links to
+Forgejo at https://git.blastbrean.com and GitHub at https://github.com/Blastbrean.
 
 ## Display requirements
 
@@ -72,9 +73,30 @@ Theme colors live in `src/styles/theme.css`, with distinct light and dark palett
 The dark values are repeated in the system-preference fallback; update both blocks
 when adjusting them.
 
-Typography pairs self-hosted Bricolage Grotesque headings with Public Sans body text and
-navigation. Font families are set in `src/styles/theme.css`, with their package
-imports in `src/layouts/Page.astro`. No external font service is requested by visitors.
+Typography uses Arial with Helvetica and system sans-serif fallbacks for all text.
+Font families are set in `src/styles/theme.css`; no web fonts are loaded.
+
+## Add a personal photo or artwork
+
+The layout uses a centered reading column with left-aligned text. A personal image
+can go in `src/pages/index.md` after your introduction or near the bottom of Home.
+Put the image file in `public/media/`, then add this HTML to the Markdown page,
+replacing the filename, alt text, and caption with your own:
+
+```html
+<figure>
+  <img src="/media/city-at-night.webp"
+       alt="Describe what is visible in your photograph."
+       width="1600" height="1067" />
+  <figcaption>Write a short note about the place, moment, or why you chose it.</figcaption>
+</figure>
+```
+
+Use the image's actual pixel width and height; the page scales it to fit and
+preserves its proportions. Export a compressed WebP or JPEG rather than a
+full-size camera original. For images farther down the page, add `loading="lazy"`.
+Credit and link the artist in the caption when using someone else's artwork with
+permission. The image and caption adapt to both themes and narrow screens.
 
 ## Add a work sample
 
@@ -104,7 +126,7 @@ pnpm check:visual
 
 The check builds the site, launches headless Chromium, and captures all pages in
 both themes at mobile, tablet, desktop, and TV viewport sizes. It checks page
-overflow, navigation, footer placement, and theme switching. Screenshots are
+overflow, navigation, theme control placement, and theme switching. Screenshots are
 written to `.preview/` (ignored by Git). After a palette or layout change, rerun
 `pnpm check:visual` and inspect the new images. No live server or deployment is
 needed; the check starts and stops its own temporary local server.
@@ -130,3 +152,70 @@ GitHub Actions deployment workflow using Node 24 and pnpm. There is no active
 deployment workflow or CNAME file in this starter.
 
 Guide: https://docs.astro.build/en/guides/deploy/github/
+
+## Personal background
+
+All selected images repeat in a grid tilted 45 degrees and drift down and right.
+Light mode uses a cream overlay strongest behind the reading column, with the
+album artwork subtly visible at the edges. Dark mode keeps the charcoal overlay.
+The browser shuffles every discovered album from all listed artists when a tab
+loads, then bakes the blur into a small repeating texture. Every album appears
+once in the tile before any duplicates fill its remaining cells or the tile repeats.
+Only that texture moves; there is no live full-screen SVG or blur filter. On a
+refresh, the plain theme background remains visible until all artwork has settled,
+then the completed grid fades in. No placeholder artwork is shown. The background, its position, and pause state
+persist across Home, Work, Projects, and Contact navigation. Page content fades
+between routes without reloading the document. A new tab or refresh shuffles the
+full collection again. Cached local artwork keeps music services off the visitor's
+loading path.
+
+Use **Space** or the pause/resume button to toggle movement. Space keeps its usual
+behavior in form fields, links, buttons, and media controls. Reduced motion starts
+paused; hidden tabs pause automatically.
+
+### Choose artists
+
+Edit `src/data/music-artists.json`, for example:
+
+```json
+["Daniel Caesar", "J. Cole", "Kendrick Lamar", "Brent Faiyaz"]
+```
+
+Album discovery runs automatically with `pnpm dev`, `pnpm build`, and
+`pnpm check:visual`. Existing artist catalogs are cached for seven days; newly
+added names are looked up automatically. To force a refresh at any time:
+
+```sh
+pnpm sync:music
+```
+
+The command looks up each exact artist in Apple's music catalog, downloads small
+album thumbnails to `public/media/music/`, and writes `src/data/music-catalog.json`.
+It omits singles with fewer than five tracks, deduplicates editions, and caches the available album results for each artist. Existing artwork is reused; a failed lookup keeps that
+artist's previous catalog. Commit the generated catalog and images with the artist
+list. Automatic refresh failures reuse existing catalogs so an offline build can still
+work. No API key is required.
+
+To include personal city, car, or music photos, put compressed JPEGs or WebPs in
+`public/media/` and add their paths to `backgroundImages` in `src/site.ts`.
+These join the random albums in the repeating tile. Original album artwork
+sources are recorded in `docs/album-artwork-sources.json`; fetched album links are
+kept in the music catalog.
+
+## Private age display
+
+Home can show “I'm X years old.” when `PRIVATE_BIRTH_DATE` is configured. Copy
+`.env.example` to `.env` and fill in the date locally in `YYYY-MM-DD` format.
+`.env` is ignored by Git. In a deployment, set the same variable as a private CI
+or hosting build secret. Never use a `PUBLIC_` variable or put the date in Markdown.
+Leave the variable blank to omit the age; `showAge: true` in Home enables the display.
+
+Astro reads the secret only during page rendering at build time. Only the computed
+integer is rendered into HTML; neither the date nor a client-side age calculation
+is shipped. Age uses the America/Los_Angeles calendar (February 29 birthdays
+advance on March 1 in non-leap years).
+
+Because this is a static site, the age updates when the site is rebuilt and
+published. Once deployment is enabled, schedule a daily build and publish using
+the private secret; no deployment or scheduled publishing has been enabled here.
+Observers can infer a birthday by monitoring when the displayed age changes.

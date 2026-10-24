@@ -1,0 +1,567 @@
+[
+  {
+    "artist": "Daniel Caesar",
+    "albums": [
+      {
+        "title": "NEVER ENOUGH",
+        "image": "/media/music/1671667136.jpg",
+        "url": "https://music.apple.com/us/album/never-enough/1671667136?uo=4"
+      },
+      {
+        "title": "Son Of Spergy",
+        "image": "/media/music/1839352404.jpg",
+        "url": "https://music.apple.com/us/album/son-of-spergy/1839352404?uo=4"
+      },
+      {
+        "title": "Freudian",
+        "image": "/media/music/1799080774.jpg",
+        "url": "https://music.apple.com/us/album/freudian/1799080774?uo=4"
+      },
+      {
+        "title": "CASE STUDY 01",
+        "image": "/media/music/1799080239.jpg",
+        "url": "https://music.apple.com/us/album/case-study-01/1799080239?uo=4"
+      },
+      {
+        "title": "Pilgrim's Paradise",
+        "image": "/media/music/1799079989.jpg",
+        "url": "https://music.apple.com/us/album/pilgrims-paradise/1799079989?uo=4"
+      },
+      {
+        "title": "Up Next Live From Apple Covent Garden - EP",
+        "image": "/media/music/1800204112.jpg",
+        "url": "https://music.apple.com/us/album/up-next-live-from-apple-covent-garden-ep/1800204112?uo=4"
+      }
+    ]
+  },
+  {
+    "artist": "J. Cole",
+    "albums": [
+      {
+        "title": "KOD",
+        "image": "/media/music/1373858456.jpg",
+        "url": "https://music.apple.com/us/album/kod/1373858456?uo=4"
+      },
+      {
+        "title": "The Off-Season",
+        "image": "/media/music/1567421945.jpg",
+        "url": "https://music.apple.com/us/album/the-off-season/1567421945?uo=4"
+      },
+      {
+        "title": "Might Delete Later",
+        "image": "/media/music/1739698034.jpg",
+        "url": "https://music.apple.com/us/album/might-delete-later/1739698034?uo=4"
+      },
+      {
+        "title": "The Fall-Off",
+        "image": "/media/music/1875080726.jpg",
+        "url": "https://music.apple.com/us/album/the-fall-off/1875080726?uo=4"
+      },
+      {
+        "title": "Cole World: The Sideline Story",
+        "image": "/media/music/1438892581.jpg",
+        "url": "https://music.apple.com/us/album/cole-world-the-sideline-story/1438892581?uo=4"
+      },
+      {
+        "title": "4 Your Eyez Only",
+        "image": "/media/music/1440934458.jpg",
+        "url": "https://music.apple.com/us/album/4-your-eyez-only/1440934458?uo=4"
+      },
+      {
+        "title": "2014 Forest Hills Drive",
+        "image": "/media/music/1600766204.jpg",
+        "url": "https://music.apple.com/us/album/2014-forest-hills-drive/1600766204?uo=4"
+      },
+      {
+        "title": "Born Sinner (Deluxe Version)",
+        "image": "/media/music/1529510479.jpg",
+        "url": "https://music.apple.com/us/album/born-sinner-deluxe-version/1529510479?uo=4"
+      },
+      {
+        "title": "Friday Night Lights",
+        "image": "/media/music/1782159762.jpg",
+        "url": "https://music.apple.com/us/album/friday-night-lights/1782159762?uo=4"
+      },
+      {
+        "title": "The Warm Up",
+        "image": "/media/music/1781303075.jpg",
+        "url": "https://music.apple.com/us/album/the-warm-up/1781303075?uo=4"
+      },
+      {
+        "title": "The Come Up Mixtape Vol. 1",
+        "image": "/media/music/1780445827.jpg",
+        "url": "https://music.apple.com/us/album/the-come-up-mixtape-vol-1/1780445827?uo=4"
+      },
+      {
+        "title": "Forest Hills Drive: Live from Fayetteville, NC",
+        "image": "/media/music/1731087315.jpg",
+        "url": "https://music.apple.com/us/album/forest-hills-drive-live-from-fayetteville-nc/1731087315?uo=4"
+      }
+    ]
+  },
+  {
+    "artist": "Kendrick Lamar",
+    "albums": [
+      {
+        "title": "Mr. Morale & The Big Steppers",
+        "image": "/media/music/1623854804.jpg",
+        "url": "https://music.apple.com/us/album/mr-morale-the-big-steppers/1623854804?uo=4"
+      },
+      {
+        "title": "GNX",
+        "image": "/media/music/1781270319.jpg",
+        "url": "https://music.apple.com/us/album/gnx/1781270319?uo=4"
+      },
+      {
+        "title": "DAMN.",
+        "image": "/media/music/1440881047.jpg",
+        "url": "https://music.apple.com/us/album/damn/1440881047?uo=4"
+      },
+      {
+        "title": "To Pimp a Butterfly",
+        "image": "/media/music/1440828886.jpg",
+        "url": "https://music.apple.com/us/album/to-pimp-a-butterfly/1440828886?uo=4"
+      },
+      {
+        "title": "good kid, m.A.A.d city (Deluxe Version)",
+        "image": "/media/music/1440818890.jpg",
+        "url": "https://music.apple.com/us/album/good-kid-m-a-a-d-city-deluxe-version/1440818890?uo=4"
+      },
+      {
+        "title": "Black Panther: The Album",
+        "image": "/media/music/1440906927.jpg",
+        "url": "https://music.apple.com/us/album/black-panther-the-album/1440906927?uo=4"
+      },
+      {
+        "title": "Section.80",
+        "image": "/media/music/1475039105.jpg",
+        "url": "https://music.apple.com/us/album/section-80/1475039105?uo=4"
+      },
+      {
+        "title": "Overly Dedicated",
+        "image": "/media/music/1171563506.jpg",
+        "url": "https://music.apple.com/us/album/overly-dedicated/1171563506?uo=4"
+      },
+      {
+        "title": "untitled unmastered.",
+        "image": "/media/music/1440844834.jpg",
+        "url": "https://music.apple.com/us/album/untitled-unmastered/1440844834?uo=4"
+      },
+      {
+        "title": "DAMN. COLLECTORS EDITION.",
+        "image": "/media/music/1403517283.jpg",
+        "url": "https://music.apple.com/us/album/damn-collectors-edition/1403517283?uo=4"
+      }
+    ]
+  },
+  {
+    "artist": "Leon Thomas",
+    "albums": [
+      {
+        "title": "MUTT",
+        "image": "/media/music/1765021558.jpg",
+        "url": "https://music.apple.com/us/album/mutt/1765021558?uo=4"
+      },
+      {
+        "title": "MUTT Deluxe: HEEL",
+        "image": "/media/music/1812987941.jpg",
+        "url": "https://music.apple.com/us/album/mutt-deluxe-heel/1812987941?uo=4"
+      },
+      {
+        "title": "PHOLKS",
+        "image": "/media/music/1842203086.jpg",
+        "url": "https://music.apple.com/us/album/pholks/1842203086?uo=4"
+      },
+      {
+        "title": "Genesis",
+        "image": "/media/music/1426065887.jpg",
+        "url": "https://music.apple.com/us/album/genesis/1426065887?uo=4"
+      },
+      {
+        "title": "Electric Dusk",
+        "image": "/media/music/1699908490.jpg",
+        "url": "https://music.apple.com/us/album/electric-dusk/1699908490?uo=4"
+      },
+      {
+        "title": "MUTT (Live from NPR's Tiny Desk) - EP",
+        "image": "/media/music/1833066349.jpg",
+        "url": "https://music.apple.com/us/album/mutt-live-from-nprs-tiny-desk-ep/1833066349?uo=4"
+      }
+    ]
+  },
+  {
+    "artist": "Frank Ocean",
+    "albums": [
+      {
+        "title": "Blonde",
+        "image": "/media/music/1146195596.jpg",
+        "url": "https://music.apple.com/us/album/blonde/1146195596?uo=4"
+      },
+      {
+        "title": "channel ORANGE",
+        "image": "/media/music/1440765580.jpg",
+        "url": "https://music.apple.com/us/album/channel-orange/1440765580?uo=4"
+      }
+    ]
+  },
+  {
+    "artist": "Childish Gambino",
+    "albums": [
+      {
+        "title": "EP (2011 Re-Release)",
+        "image": "/media/music/1334324193.jpg",
+        "url": "https://music.apple.com/us/album/ep-2011-re-release/1334324193?uo=4"
+      },
+      {
+        "title": "Bando Stone and The New World",
+        "image": "/media/music/1757678472.jpg",
+        "url": "https://music.apple.com/us/album/bando-stone-and-the-new-world/1757678472?uo=4"
+      },
+      {
+        "title": "Atavista",
+        "image": "/media/music/1745756757.jpg",
+        "url": "https://music.apple.com/us/album/atavista/1745756757?uo=4"
+      },
+      {
+        "title": "\"Awaken, My Love!\"",
+        "image": "/media/music/1771719334.jpg",
+        "url": "https://music.apple.com/us/album/awaken-my-love/1771719334?uo=4"
+      },
+      {
+        "title": "Because the Internet",
+        "image": "/media/music/1771709429.jpg",
+        "url": "https://music.apple.com/us/album/because-the-internet/1771709429?uo=4"
+      },
+      {
+        "title": "Camp",
+        "image": "/media/music/1771713810.jpg",
+        "url": "https://music.apple.com/us/album/camp/1771713810?uo=4"
+      },
+      {
+        "title": "Kauai",
+        "image": "/media/music/1771705741.jpg",
+        "url": "https://music.apple.com/us/album/kauai/1771705741?uo=4"
+      },
+      {
+        "title": "Heartbeat (Remix Bundle)",
+        "image": "/media/music/1771694099.jpg",
+        "url": "https://music.apple.com/us/album/heartbeat-remix-bundle/1771694099?uo=4"
+      }
+    ]
+  },
+  {
+    "artist": "Avenoir",
+    "albums": [
+      {
+        "title": "Mirage",
+        "image": "/media/music/1834189535.jpg",
+        "url": "https://music.apple.com/us/album/mirage/1834189535?uo=4"
+      },
+      {
+        "title": "Medea - Single",
+        "image": "/media/music/1744093369.jpg",
+        "url": "https://music.apple.com/us/album/medea-single/1744093369?uo=4"
+      },
+      {
+        "title": "NOIRE",
+        "image": "/media/music/6820336163.jpg",
+        "url": "https://music.apple.com/us/album/noire/6820336163?uo=4"
+      }
+    ]
+  },
+  {
+    "artist": "Giveon",
+    "albums": [
+      {
+        "title": "When It's All Said And Done... Take Time",
+        "image": "/media/music/1556122764.jpg",
+        "url": "https://music.apple.com/us/album/when-its-all-said-and-done-take-time/1556122764?uo=4"
+      },
+      {
+        "title": "Give Or Take",
+        "image": "/media/music/1627365840.jpg",
+        "url": "https://music.apple.com/us/album/give-or-take/1627365840?uo=4"
+      },
+      {
+        "title": "TAKE TIME",
+        "image": "/media/music/1503721742.jpg",
+        "url": "https://music.apple.com/us/album/take-time/1503721742?uo=4"
+      },
+      {
+        "title": "BELOVED",
+        "image": "/media/music/1815356726.jpg",
+        "url": "https://music.apple.com/us/album/beloved/1815356726?uo=4"
+      },
+      {
+        "title": "BELOVED: ACT II",
+        "image": "/media/music/1891467233.jpg",
+        "url": "https://music.apple.com/us/album/beloved-act-ii/1891467233?uo=4"
+      },
+      {
+        "title": "When It's All Said And Done (Apple Music Edition) - EP",
+        "image": "/media/music/1534079644.jpg",
+        "url": "https://music.apple.com/us/album/when-its-all-said-and-done-apple-music-edition-ep/1534079644?uo=4"
+      }
+    ]
+  },
+  {
+    "artist": "Khamari",
+    "albums": [
+      {
+        "title": "To Dry a Tear",
+        "image": "/media/music/1829577315.jpg",
+        "url": "https://music.apple.com/us/album/to-dry-a-tear/1829577315?uo=4"
+      },
+      {
+        "title": "A Brief Nirvana",
+        "image": "/media/music/1680979091.jpg",
+        "url": "https://music.apple.com/us/album/a-brief-nirvana/1680979091?uo=4"
+      },
+      {
+        "title": "Eldorado - EP",
+        "image": "/media/music/1567245579.jpg",
+        "url": "https://music.apple.com/us/album/eldorado-ep/1567245579?uo=4"
+      }
+    ]
+  },
+  {
+    "artist": "Tyler, The Creator",
+    "albums": [
+      {
+        "title": "Wolf",
+        "image": "/media/music/600946351.jpg",
+        "url": "https://music.apple.com/us/album/wolf/600946351?uo=4"
+      },
+      {
+        "title": "Goblin",
+        "image": "/media/music/433409557.jpg",
+        "url": "https://music.apple.com/us/album/goblin/433409557?uo=4"
+      },
+      {
+        "title": "Cherry Bomb",
+        "image": "/media/music/983056044.jpg",
+        "url": "https://music.apple.com/us/album/cherry-bomb/983056044?uo=4"
+      },
+      {
+        "title": "Flower Boy",
+        "image": "/media/music/1254572564.jpg",
+        "url": "https://music.apple.com/us/album/flower-boy/1254572564?uo=4"
+      },
+      {
+        "title": "IGOR",
+        "image": "/media/music/1463409338.jpg",
+        "url": "https://music.apple.com/us/album/igor/1463409338?uo=4"
+      },
+      {
+        "title": "CALL ME IF YOU GET LOST",
+        "image": "/media/music/1573484415.jpg",
+        "url": "https://music.apple.com/us/album/call-me-if-you-get-lost/1573484415?uo=4"
+      },
+      {
+        "title": "CHROMAKOPIA",
+        "image": "/media/music/1776500452.jpg",
+        "url": "https://music.apple.com/us/album/chromakopia/1776500452?uo=4"
+      },
+      {
+        "title": "DON'T TAP THE GLASS",
+        "image": "/media/music/1827715784.jpg",
+        "url": "https://music.apple.com/us/album/dont-tap-the-glass/1827715784?uo=4"
+      },
+      {
+        "title": "CALL ME IF YOU GET LOST: The Estate Sale",
+        "image": "/media/music/1679454273.jpg",
+        "url": "https://music.apple.com/us/album/call-me-if-you-get-lost-the-estate-sale/1679454273?uo=4"
+      },
+      {
+        "title": "Music Inspired by Illumination & Dr. Seuss' The Grinch - EP",
+        "image": "/media/music/1441586573.jpg",
+        "url": "https://music.apple.com/us/album/music-inspired-by-illumination-dr-seuss-the-grinch-ep/1441586573?uo=4"
+      },
+      {
+        "title": "Cherry Bomb + Instrumentals",
+        "image": "/media/music/1438243813.jpg",
+        "url": "https://music.apple.com/us/album/cherry-bomb-instrumentals/1438243813?uo=4"
+      },
+      {
+        "title": "Wolf + Instrumentals",
+        "image": "/media/music/1679029373.jpg",
+        "url": "https://music.apple.com/us/album/wolf-instrumentals/1679029373?uo=4"
+      },
+      {
+        "title": "Apple Music Presents: Tyler, The Creator",
+        "image": "/media/music/1476341907.jpg",
+        "url": "https://music.apple.com/us/album/apple-music-presents-tyler-the-creator/1476341907?uo=4"
+      }
+    ]
+  },
+  {
+    "artist": "Juice WRLD",
+    "albums": [
+      {
+        "title": "Goodbye & Good Riddance",
+        "image": "/media/music/1445927022.jpg",
+        "url": "https://music.apple.com/us/album/goodbye-good-riddance/1445927022?uo=4"
+      },
+      {
+        "title": "Death Race for Love",
+        "image": "/media/music/1454440896.jpg",
+        "url": "https://music.apple.com/us/album/death-race-for-love/1454440896?uo=4"
+      },
+      {
+        "title": "Legends Never Die",
+        "image": "/media/music/1526561014.jpg",
+        "url": "https://music.apple.com/us/album/legends-never-die/1526561014?uo=4"
+      },
+      {
+        "title": "Fighting Demons",
+        "image": "/media/music/1599450560.jpg",
+        "url": "https://music.apple.com/us/album/fighting-demons/1599450560?uo=4"
+      },
+      {
+        "title": "The Party Never Ends",
+        "image": "/media/music/1781129434.jpg",
+        "url": "https://music.apple.com/us/album/the-party-never-ends/1781129434?uo=4"
+      },
+      {
+        "title": "The Party Never Ends 2.0",
+        "image": "/media/music/1781827661.jpg",
+        "url": "https://music.apple.com/us/album/the-party-never-ends-2-0/1781827661?uo=4"
+      }
+    ]
+  },
+  {
+    "artist": "Lil Yachty",
+    "albums": [
+      {
+        "title": "Lil Boat 2",
+        "image": "/media/music/1355203148.jpg",
+        "url": "https://music.apple.com/us/album/lil-boat-2/1355203148?uo=4"
+      },
+      {
+        "title": "Let’s Start Here.",
+        "image": "/media/music/1667414099.jpg",
+        "url": "https://music.apple.com/us/album/lets-start-here/1667414099?uo=4"
+      },
+      {
+        "title": "Nuthin' 2 Prove",
+        "image": "/media/music/1439398502.jpg",
+        "url": "https://music.apple.com/us/album/nuthin-2-prove/1439398502?uo=4"
+      },
+      {
+        "title": "Lil Boat 3",
+        "image": "/media/music/1515611952.jpg",
+        "url": "https://music.apple.com/us/album/lil-boat-3/1515611952?uo=4"
+      },
+      {
+        "title": "Lil Boat",
+        "image": "/media/music/1440889951.jpg",
+        "url": "https://music.apple.com/us/album/lil-boat/1440889951?uo=4"
+      },
+      {
+        "title": "Lil Boat 3.5",
+        "image": "/media/music/1541243831.jpg",
+        "url": "https://music.apple.com/us/album/lil-boat-3-5/1541243831?uo=4"
+      },
+      {
+        "title": "The Secret Recipe - EP",
+        "image": "/media/music/1709605878.jpg",
+        "url": "https://music.apple.com/us/album/the-secret-recipe-ep/1709605878?uo=4"
+      },
+      {
+        "title": "Teenage Emotions",
+        "image": "/media/music/1440880124.jpg",
+        "url": "https://music.apple.com/us/album/teenage-emotions/1440880124?uo=4"
+      },
+      {
+        "title": "Summer Songs 2",
+        "image": "/media/music/1440867423.jpg",
+        "url": "https://music.apple.com/us/album/summer-songs-2/1440867423?uo=4"
+      },
+      {
+        "title": "BIRTHDAY MIX 6",
+        "image": "/media/music/1582054397.jpg",
+        "url": "https://music.apple.com/us/album/birthday-mix-6/1582054397?uo=4"
+      },
+      {
+        "title": "Michigan Boy Boat",
+        "image": "/media/music/1564522242.jpg",
+        "url": "https://music.apple.com/us/album/michigan-boy-boat/1564522242?uo=4"
+      }
+    ]
+  },
+  {
+    "artist": "Baby Keem",
+    "albums": [
+      {
+        "title": "The Melodic Blue",
+        "image": "/media/music/1584419112.jpg",
+        "url": "https://music.apple.com/us/album/the-melodic-blue/1584419112?uo=4"
+      },
+      {
+        "title": "Ca$ino",
+        "image": "/media/music/1878399948.jpg",
+        "url": "https://music.apple.com/us/album/ca%24ino/1878399948?uo=4"
+      },
+      {
+        "title": "DIE FOR MY BITCH",
+        "image": "/media/music/1472614374.jpg",
+        "url": "https://music.apple.com/us/album/die-for-my-bitch/1472614374?uo=4"
+      },
+      {
+        "title": "The Sound of Bad Habit",
+        "image": "/media/music/1465954836.jpg",
+        "url": "https://music.apple.com/us/album/the-sound-of-bad-habit/1465954836?uo=4"
+      },
+      {
+        "title": "Hearts and Darts - EP",
+        "image": "/media/music/1578743388.jpg",
+        "url": "https://music.apple.com/us/album/hearts-and-darts-ep/1578743388?uo=4"
+      }
+    ]
+  },
+  {
+    "artist": "Brent Faiyaz",
+    "albums": [
+      {
+        "title": "WASTELAND",
+        "image": "/media/music/1629943089.jpg",
+        "url": "https://music.apple.com/us/album/wasteland/1629943089?uo=4"
+      },
+      {
+        "title": "F**k the World",
+        "image": "/media/music/1488013862.jpg",
+        "url": "https://music.apple.com/us/album/f-k-the-world/1488013862?uo=4"
+      },
+      {
+        "title": "Sonder Son",
+        "image": "/media/music/1287758285.jpg",
+        "url": "https://music.apple.com/us/album/sonder-son/1287758285?uo=4"
+      },
+      {
+        "title": "A.M. Paradox - EP",
+        "image": "/media/music/1153937452.jpg",
+        "url": "https://music.apple.com/us/album/a-m-paradox-ep/1153937452?uo=4"
+      },
+      {
+        "title": "Larger Than Life",
+        "image": "/media/music/1710673514.jpg",
+        "url": "https://music.apple.com/us/album/larger-than-life/1710673514?uo=4"
+      },
+      {
+        "title": "Lost - EP",
+        "image": "/media/music/1438193386.jpg",
+        "url": "https://music.apple.com/us/album/lost-ep/1438193386?uo=4"
+      },
+      {
+        "title": "Icon",
+        "image": "/media/music/1867923697.jpg",
+        "url": "https://music.apple.com/us/album/icon/1867923697?uo=4"
+      },
+      {
+        "title": "Apple Music Live: Brent Faiyaz",
+        "image": "/media/music/1717111898.jpg",
+        "url": "https://music.apple.com/us/album/apple-music-live-brent-faiyaz/1717111898?uo=4"
+      }
+    ]
+  }
+]

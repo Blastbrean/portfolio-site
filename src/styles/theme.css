@@ -2,6 +2,7 @@
 :root {
     color-scheme: light;
     --background: #fffcf2;
+    --background-scrim: radial-gradient(ellipse at 50% 20%, #fffcf2 0%, #fffcf2f5 50%, #fffcf2e6 100%);
     --text: #29364a;
     --link: #295c91;
     --border: #d6dfeb;
@@ -11,8 +12,8 @@
     --hover-surface: #fff0bd;
     --section-accent: #e6bf58;
     --heading: #334f70;
-    --font-body: 'Public Sans Variable', system-ui, sans-serif;
-    --font-heading: 'Bricolage Grotesque Variable', 'Public Sans Variable', sans-serif;
+    --font-body: Arial, Helvetica, sans-serif;
+    --font-heading: var(--font-body);
     font-family: var(--font-body);
     color: var(--text);
     background: var(--background);
@@ -21,6 +22,7 @@
   :root[data-theme="dark"] {
     color-scheme: dark;
     --background: #302e2c;
+    --background-scrim: #302e2cd9;
     --text: #f3ede6;
     --link: #dfc0ee;
     --border: #625b55;
@@ -35,6 +37,7 @@
     :root:not([data-theme="light"]) {
       color-scheme: dark;
       --background: #302e2c;
+      --background-scrim: #302e2cd9;
       --text: #f3ede6;
       --link: #dfc0ee;
       --border: #625b55;
