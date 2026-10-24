@@ -8,7 +8,7 @@ ageFallback: 17
 
 I'm a {{age}} year old software engineer from California, USA. To quickly explain who I am: *I love music, cars, shows, YouTube, movies, anime, gaming, guns, food, traveling, and most importantly - to have a good time. Also, I'm Asian-American.*
 
-I love building things in general, from automation and gaming, to reverse engineering and hardware. I have been encorporating AI (ChatGPT, Claude) as a tool to help me become the best developer I can.
+I love building things in general, from automation and gaming, to reverse engineering and hardware. I have been encorporating AI (ChatGPT, Claude) as a tool to help me become the best developer I can, not as a crutch.
 
 A good software engineer uplifts the people around them, learns, and thinks ahead. I'm interested in working with others who care, and to work on hard difficult tasks that push me to do things I have never done before.
 

@@ -72,6 +72,22 @@ try {
       await context.close();
     }
   }
+  let intermediateChecks = 0;
+  const intermediateContext = await browser.newContext({ reducedMotion: 'reduce' });
+  const intermediatePage = await intermediateContext.newPage();
+  for (const colorScheme of ['light', 'dark']) {
+    await intermediatePage.emulateMedia({ colorScheme });
+    for (const [width, height] of [[390, 844], [600, 900], [844, 390], [1024, 768], [1920, 1080]]) {
+      await intermediatePage.setViewportSize({ width, height });
+      for (const route of ['/', '/work/', '/projects/', '/contact/']) {
+        await intermediatePage.goto(origin + route);
+        await intermediatePage.locator('#theme').waitFor({ state: 'visible' });
+        assert.ok(await intermediatePage.evaluate(() => document.documentElement.scrollWidth <= innerWidth), `${width}×${height} ${colorScheme} ${route}: overflow`);
+        intermediateChecks++;
+      }
+    }
+  }
+  await intermediateContext.close();
   const loadingContext = await browser.newContext({ reducedMotion: 'reduce' });
   const loadingPage = await loadingContext.newPage();
   let releaseArtwork;
@@ -152,7 +168,7 @@ try {
   await motionPage.getByRole('button', { name: 'Pause background' }).click();
   assert.equal(await background.getAttribute('data-paused'), 'true');
   await motionContext.close();
-  console.log(`Passed ${checks} page/theme/viewport checks, saved theme overrides, live system changes, diagonal grid movement, seamless looping, Space shortcut, reduced motion, and uninterrupted background navigation. Screenshots: ${output}`);
+  console.log(`Passed ${checks} page/theme/viewport checks plus ${intermediateChecks} intermediate/landscape layout checks, saved theme overrides, live system changes, diagonal grid movement, seamless looping, Space shortcut, reduced motion, and uninterrupted background navigation. Screenshots: ${output}`);
 } finally {
   await browser?.close();
   await new Promise(done => server.close(done));

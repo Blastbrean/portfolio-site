@@ -1,13 +1,13 @@
 /* Light: cream, butter yellow, and sky blue. Dark: warm charcoal, dusty rose and lilac. */
 :root {
     color-scheme: light;
-    --background: #fffcf2;
-    --background-scrim: radial-gradient(ellipse at 50% 20%, #fffcf2 0%, #fffcf2f5 50%, #fffcf2e6 100%);
+    --background: #e5e1d9;
+    --background-scrim: radial-gradient(ellipse at 50% 20%, #e5e1d9f0 0%, #e5e1d9e6 50%, #e5e1d9cc 100%);
     --text: #29364a;
-    --link: #295c91;
+    --link: #234e7b;
     --border: #d6dfeb;
-    --muted: #5f6d7f;
-    --surface: #fff6d9;
+    --muted: #485365;
+    --surface: #eee5ce;
     --accent: #deedff;
     --hover-surface: #fff0bd;
     --section-accent: #e6bf58;
