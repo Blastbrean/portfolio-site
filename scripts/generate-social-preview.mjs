@@ -22,7 +22,7 @@ try {
     .url { position: absolute; bottom: 58px; font-size: 23px; color: #dfc0ee; }
   </style></head><body><div class="covers">${tiles}</div><div class="overlay"></div><main>
     <h1>blastbrean</h1>
-    <p>Software engineer from California.<br>Games, automation, reverse engineering, and hardware.</p>
+    <p>Software engineer from California.<br>Games, automation, reverse engineering, and more.</p>
     <div class="url">blastbrean.com</div>
   </main></body></html>`);
   await page.evaluate(() => Promise.all([...document.images].map(image => image.decode())));

@@ -2,10 +2,9 @@
 export const site = {
   name: 'blastbrean',
   favicon: '/favicon.svg',
-  description: 'Software engineer from California. Games, automation, reverse engineering, and hardware.',
-  previewTitle: 'blastbrean — Software engineer',
+  description: 'My portfolio of who am I',
+  previewTitle: 'Home · blastbrean',
   previewImage: '/social-preview.jpg',
-  previewImageAlt: 'blastbrean — software engineer from California, over a background of album covers.',
-  // Add personal photos here using paths relative to public/.
+  previewImageAlt: 'Background of album covers detailing who `blastbrean` is',
   backgroundImages: [] as string[],
 };
