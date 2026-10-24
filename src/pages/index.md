@@ -18,6 +18,10 @@ Currently, I want to work as a game developer or freelance on game related tasks
 
 This is my time spent with individual companies, games, or businesses.
 
+<div class="experience-timeline">
+
+<section class="experience-entry">
+
 ### Ghoul://RE
 
 https://www.rolimons.com/game/72368345999613 
@@ -33,6 +37,10 @@ In 2026, I worked on Ghoul://RE, a Roblox game with over 100+ million visits, as
 - in the first week, we fixed over 10 bugs in the game and the entire tutorial system, communicating with testers and fixing things from a trello
 
 - created debugging commands on CMDR to make developing more efficient, pushed for using a baseplate test game that made rapid testing easier
+
+</section>
+
+<section class="experience-entry">
 
 ### Tactical Football
 
@@ -54,6 +62,10 @@ In 2026, I worked on Tactical Futbol, a Roblox game with over 800+ thousand visi
 
 - created a quick discord bot using Cloudflare Workers and Node.JS to manage rollbacks, unbans, and bans communicated through datastore and BanAPI
 
+</section>
+
+<section class="experience-entry">
+
 ### Real Futbol
 
 https://www.rolimons.com/game/14004668761
@@ -67,6 +79,10 @@ In 2025, I worked on Real Futbol, a Roblox game with over 243+ million vists, as
 - affected private cheats with downtime and used delayed bans, actors, and Luraph to make reverse engineering a nightmare
 
 - used new and public detections to stay ahead of cheaters bypassing or hiding from detections by viewing Luau source code
+
+</section>
+
+<section class="experience-entry">
 
 ### Lycoris
 
@@ -86,6 +102,10 @@ In 2023-2025, I worked on Lycoris, a Luau script hub with over 5000+ buyers, as 
 
 - worked with other script developers to advance Deepwoken cheating, and timing creators to develop hundreds of move timings in a week
 
+</section>
+
+<section class="experience-entry">
+
 ### funnyhack
 
 In 2022, I developed a series of cheats under the funnyhack umbrella in C++ for CS:GO using bases like Qo0 and supremacy.
@@ -99,5 +119,9 @@ In 2022, I developed a series of cheats under the funnyhack umbrella in C++ for 
 - fixed prediction on the client including datamap compression due to deltas
 
 - overall, created HvH cheats on (2018) Legacy and legit cheats for Jailbreak and other community servers to gain a competitive edge
+
+</section>
+
+</div>
 
 [See my work](/work/) · [Contact](/contact/)

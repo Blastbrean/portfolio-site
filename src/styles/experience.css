@@ -1,0 +1,59 @@
+/* A quiet curved rail beside each entry; only the narrow highlight is animated. */
+.experience-timeline {
+  --timeline-line: #9d829d;
+  --timeline-highlight: #f2c6da;
+  --timeline-dot: #d6c5ed;
+}
+:root[data-theme="light"] .experience-timeline {
+  --timeline-line: #9b899f;
+  --timeline-highlight: #b47e9b;
+  --timeline-dot: #aa91ba;
+}
+.experience-entry {
+  position: relative;
+  padding: 0 0 1.75rem 2.25rem;
+  display: flow-root;
+}
+.experience-entry::before,
+.experience-entry::after {
+  content: "";
+  position: absolute;
+  top: 0.85rem;
+  bottom: -0.85rem;
+  left: 0;
+  width: 1.5rem;
+  pointer-events: none;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 400' preserveAspectRatio='none'%3E%3Cpath d='M12 0 C-2 65 26 135 12 200 S-2 335 12 400' fill='none' stroke='black' stroke-width='2' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+.experience-entry::before {
+  background: var(--timeline-line);
+  opacity: 0.65;
+}
+.experience-entry::after {
+  background: linear-gradient(to bottom, transparent, var(--timeline-highlight), transparent) 0 0 / 100% 12rem repeat-y;
+  animation: timeline-flow 10s linear infinite;
+}
+.experience-entry:last-child::before,
+.experience-entry:last-child::after { bottom: 0; }
+.experience-entry > h3:first-child { margin-top: 0; }
+.experience-entry > h3:first-child::before {
+  content: "";
+  position: absolute;
+  left: 0.47rem;
+  top: 0.55rem;
+  width: 0.56rem;
+  height: 0.56rem;
+  border-radius: 50%;
+  background: var(--timeline-dot);
+  box-shadow: 0 0 0 4px var(--background);
+  z-index: 1;
+}
+@keyframes timeline-flow {
+  to { background-position-y: 12rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .experience-entry::after { animation: none; }
+}
+@media (max-width: 40rem) {
+  .experience-entry { padding-left: 1.9rem; }
+}
