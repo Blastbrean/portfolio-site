@@ -2,11 +2,11 @@
 :root {
     color-scheme: light;
     --background: #e5e1d9;
-    --background-scrim: radial-gradient(ellipse at 50% 20%, #e5e1d9f0 0%, #e5e1d9e6 50%, #e5e1d9cc 100%);
+    --background-scrim: radial-gradient(ellipse at 50% 20%, #e5e1d9f0 0%, #e5e1d9e6 50%, #e5e1d9d9 100%);
     --text: #29364a;
     --link: #234e7b;
-    --border: #d6dfeb;
-    --muted: #485365;
+    --border: #596575;
+    --muted: #3e4959;
     --surface: #eee5ce;
     --accent: #deedff;
     --hover-surface: #fff0bd;

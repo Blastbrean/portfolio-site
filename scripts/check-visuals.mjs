@@ -108,7 +108,7 @@ try {
   const grid = motionPage.locator('.background-grid');
   await motionPage.getByRole('button', { name: 'Resume background' }).waitFor();
   assert.equal(await background.getAttribute('data-paused'), 'true');
-  assert.equal(await grid.evaluate(element => getComputedStyle(element).animationPlayState), 'paused');
+  assert.equal(await grid.evaluate(element => element.getAnimations()[0].playState), 'paused');
   await motionPage.locator('.personal-background[data-ready="true"]').waitFor();
   assert.equal(await motionPage.locator('svg').count(), 0);
   assert.equal(await background.evaluate(element => getComputedStyle(element).viewTransitionName), 'none');
@@ -119,8 +119,8 @@ try {
   const available = await background.evaluate(element => JSON.parse(element.dataset.catalog).flatMap(artist => artist.albums.map(album => album.image)));
   assert.deepEqual([...selection].sort(), [...new Set(available)].sort());
   await motionPage.getByRole('button', { name: 'Resume background' }).click();
-  assert.equal(await grid.evaluate(element => getComputedStyle(element).animationPlayState), 'running');
-  // Seek the real CSS animation to compare motion and the exact loop boundary.
+  assert.equal(await grid.evaluate(element => element.getAnimations()[0].playState), 'running');
+  // Seek the real animation to compare motion and the exact loop boundary.
   const motion = await grid.evaluate(element => {
     const animation = element.getAnimations()[0];
     animation.pause();

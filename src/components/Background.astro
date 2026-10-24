@@ -24,7 +24,7 @@ import catalog from "../data/music-catalog.json";
     const grid = background.querySelector<HTMLElement>(".background-grid")!;
     const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
     let paused = reducedMotion.matches;
-    let animationTime: number | null = null;
+    let animation: Animation | undefined;
     const sync = () => {
       const toggle =
         document.querySelector<HTMLButtonElement>("#background-toggle");
@@ -35,7 +35,12 @@ import catalog from "../data/music-catalog.json";
         toggle.setAttribute("aria-keyshortcuts", "Space");
         toggle.title = "Space pauses or resumes the background";
       }
-      background.dataset.paused = String(paused || document.hidden);
+      const stopped = paused || document.hidden;
+      background.dataset.paused = String(stopped);
+      if (animation) {
+        if (stopped) animation.pause();
+        else animation.play();
+      }
     };
     document.addEventListener("click", (event) => {
       if ((event.target as Element)?.closest("#background-toggle")) {
@@ -69,15 +74,8 @@ import catalog from "../data/music-catalog.json";
       sync();
     });
     document.addEventListener("visibilitychange", sync);
-    document.addEventListener("astro:before-swap", () => {
-      animationTime = Number(grid.getAnimations()[0]?.currentTime ?? 0);
-    });
-    document.addEventListener("astro:after-swap", () => {
-      const animation = grid.getAnimations()[0];
-      if (animation && animationTime !== null)
-        animation.currentTime = animationTime;
-      sync();
-    });
+    // Keep the Animation object with the persistent node across page changes.
+    document.addEventListener("astro:after-swap", sync);
     document.addEventListener("astro:page-load", sync);
     sync();
 
@@ -134,9 +132,14 @@ import catalog from "../data/music-catalog.json";
         );
       }
       background.style.setProperty("--period", `${columns * 220}px`);
-      background.style.setProperty("--duration", `${columns * 10}s`);
       grid.style.backgroundSize = `${columns * 220}px ${rows * 220}px`;
       grid.style.backgroundImage = `url("${canvas.toDataURL("image/webp", 0.75)}")`;
+      const distance = columns * 220;
+      animation = grid.animate([
+        { transform: `translateX(${-distance / 2}px)` },
+        { transform: `translateX(${distance / 2}px)` },
+      ], { duration: columns * 10000, iterations: Infinity, easing: "linear" });
+      sync();
       background.dataset.loadedCount = String(images.length);
       background.dataset.ready = "true";
       background.dataset.selection = JSON.stringify(selected);
@@ -148,7 +151,6 @@ import catalog from "../data/music-catalog.json";
   .personal-background {
     view-transition-name: none !important;
     --period: 440px;
-    --duration: 60s;
     position: fixed;
     inset: 0;
     z-index: -1;
@@ -175,22 +177,10 @@ import catalog from "../data/music-catalog.json";
     background-size: 220px 220px;
     background-repeat: repeat;
     will-change: transform;
-    animation: drift var(--duration) linear infinite paused;
-  }
-  .personal-background[data-paused="false"] .background-grid {
-    animation-play-state: running;
   }
   @media (prefers-reduced-motion: reduce) {
     .background-tilt {
       transition: none;
-    }
-  }
-  @keyframes drift {
-    from {
-      transform: translateX(calc(var(--period) * -0.5));
-    }
-    to {
-      transform: translateX(calc(var(--period) * 0.5));
     }
   }
   .personal-background::after {

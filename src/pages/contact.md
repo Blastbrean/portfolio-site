@@ -15,7 +15,9 @@ I respond and check both actively.
 
 ## Timezone & availability
 
-https://time.is/UTC-7
+12h -- https://time.is/PT or https://time.is/PST
+
+24h -- https://time.is/UTC-7
 
 Exceptions apply on holidays, when I am sick, busy due to school, or on further notice.
 
