@@ -2,6 +2,7 @@
 import { ClientRouter } from "astro:transitions";
 import { PRIVATE_BIRTH_DATE } from "astro:env/server";
 import { calculateAge } from "../lib/age";
+import LatestCommit from "../components/LatestCommit.astro";
 import Background from "../components/Background.astro";
 import { site } from "../site";
 import "../styles/theme.css";
@@ -166,6 +167,7 @@ const previewImage = new URL(site.previewImage, Astro.site);
         </div>
         <p>WASD move · ← / → rewind / forward · = / - rotate · [ / ] speed · Space pause</p>
       </section>
+      <LatestCommit />
     </footer>
   </body>
 </html>

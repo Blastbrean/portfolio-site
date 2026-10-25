@@ -1,0 +1,92 @@
+---
+import { execFileSync } from "node:child_process";
+let commit: { sha: string; message: string; date: string } | undefined;
+try {
+  const [sha, message, date] = execFileSync(
+    "git",
+    ["log", "-1", "--format=%H%n%s%n%cI"],
+    { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] },
+  )
+    .trim()
+    .split("\n");
+  if (
+    /^[a-f0-9]{40}$/.test(sha) &&
+    message &&
+    Number.isFinite(Date.parse(date))
+  )
+    commit = { sha, message, date };
+} catch {
+  /* Source archives without Git can still build. */
+}
+---
+
+{
+  commit && (
+    <p class="latest-commit">
+      Latest update ·{" "}
+      <a
+        href={`https://github.com/Blastbrean/portfolio-site/commit/${commit.sha}`}
+      >
+        <span class="commit-hash">{commit.sha.slice(0, 7)}</span> -{" "}
+        {commit.message}
+      </a>{" "}
+      ·{" "}
+      <time
+        datetime={commit.date}
+        data-commit-time
+        title={new Date(commit.date).toUTCString()}
+      >
+        {commit.date.slice(0, 10)}
+      </time>
+    </p>
+  )
+}
+<script>
+  const relative = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
+  const update = () => {
+    document
+      .querySelectorAll<HTMLTimeElement>("[data-commit-time]")
+      .forEach((time) => {
+        const seconds = (Date.parse(time.dateTime) - Date.now()) / 1000;
+        if (!Number.isFinite(seconds)) return;
+        if (Math.abs(seconds) < 60) {
+          time.textContent = "just now";
+          return;
+        }
+        const [size, unit] =
+          Math.abs(seconds) < 3600
+            ? [60, "minute"]
+            : Math.abs(seconds) < 86400
+              ? [3600, "hour"]
+              : Math.abs(seconds) < 2592000
+                ? [86400, "day"]
+                : Math.abs(seconds) < 31536000
+                  ? [2592000, "month"]
+                  : [31536000, "year"];
+        time.textContent = relative.format(
+          Math.trunc(seconds / Number(size)),
+          unit as Intl.RelativeTimeFormatUnit,
+        );
+      });
+  };
+  update();
+  document.addEventListener("astro:page-load", update);
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) update();
+  });
+  setInterval(() => {
+    if (!document.hidden) update();
+  }, 60_000);
+</script>
+<style>
+  .latest-commit {
+    margin: 0.5rem 0 0;
+    color: var(--muted);
+    font-size: 0.8rem;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+  }
+  .commit-hash {
+    font-variant-numeric: tabular-nums;
+  }
+</style>
