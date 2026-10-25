@@ -59,6 +59,8 @@ const startPreview = async (card: HTMLElement) => {
 const schedulePreview = (card: HTMLElement) => {
   if (engaged === card || pending === card) return;
   stopPreview();
+  engaged = card;
+  card.dataset.previewEngaged = 'true';
   pending = card;
   previewTimer = setTimeout(() => {
     previewTimer = undefined;
@@ -69,10 +71,12 @@ const schedulePreview = (card: HTMLElement) => {
 const stopViewer = (dialog: HTMLDialogElement) => {
   dialog.querySelectorAll<HTMLVideoElement>('video').forEach(video => {
     video.pause();
+    video.hidden = false;
     video.removeAttribute('src');
     video.querySelectorAll('track').forEach(track => track.removeAttribute('src'));
     video.load();
   });
+  dialog.querySelectorAll('.viewer-fallback').forEach(image => image.remove());
   dialog.querySelectorAll<HTMLImageElement>('img[data-viewer-source]').forEach(image => image.removeAttribute('src'));
 };
 const layout = () => {
@@ -179,6 +183,16 @@ document.addEventListener('click', event => {
     if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) event.target.close();
   }
 });
+document.addEventListener('error', event => {
+  const video = event.target;
+  if (!(video instanceof HTMLVideoElement) || !video.dataset.viewerFallback || video.hidden || !video.closest('dialog[open]')) return;
+  const image = document.createElement('img');
+  image.className = 'viewer-fallback';
+  image.src = video.dataset.viewerFallback;
+  image.alt = video.getAttribute('aria-description') ?? video.getAttribute('aria-label') ?? '';
+  video.hidden = true;
+  video.after(image);
+}, true);
 document.addEventListener('close', event => {
   if (event.target instanceof HTMLDialogElement) stopViewer(event.target);
 }, true);

@@ -4,6 +4,16 @@ import AxeBuilder from '@axe-core/playwright';
 const settle = page => page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
 const playing = page => page.locator('.gallery-preview').evaluateAll(videos => videos.filter(video => !video.paused).length);
 
+const playViewer = async page => {
+  const video = page.locator('.work-viewer[open] video').first();
+  await video.evaluate(async el => { el.muted = true; try { await el.play(); } catch {} });
+  await page.waitForFunction(() => {
+    const dialog = document.querySelector('dialog[open]');
+    const fallback = dialog?.querySelector('.viewer-fallback');
+    return dialog?.querySelector('video')?.currentTime > .1 || (fallback?.complete && fallback?.naturalWidth > 0);
+  });
+};
+
 export async function checkGallery(browser, origin, engine) {
   for (const colorScheme of ['light', 'dark']) for (const width of [320, 1440]) {
     const context = await browser.newContext({ viewport: { width, height: 1000 }, colorScheme, reducedMotion: 'reduce' });
@@ -63,8 +73,7 @@ export async function checkGallery(browser, origin, engine) {
     const video = viewer.locator('video').first();
     if (await video.count()) {
       await video.scrollIntoViewIfNeeded();
-      await video.evaluate(async el => { el.muted = true; await el.play(); });
-      await page.waitForFunction(() => document.querySelector('dialog[open] video').currentTime > 0.1);
+      await playViewer(page);
     }
     assert.ok(await viewer.evaluate(el => el.getBoundingClientRect().width <= innerWidth));
     if (engine === 'chromium' && width === 320) {
@@ -138,8 +147,7 @@ export async function checkGallery(browser, origin, engine) {
   await touchPage.locator('.gallery-open').first().tap();
   await touchPage.locator('.work-viewer[open]').waitFor();
   assert.equal(await playing(touchPage), 0);
-  await touchPage.locator('.work-viewer[open] video').first().evaluate(async video => { video.muted = true; await video.play(); });
-  await touchPage.waitForFunction(() => document.querySelector('dialog[open] video').currentTime > .1);
+  await playViewer(touchPage);
   await touch.close();
   const dataSaving = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   await dataSaving.addInitScript(() => Object.defineProperty(navigator, 'connection', { value: Object.assign(new EventTarget(), { saveData: true }), configurable: true }));
@@ -150,8 +158,7 @@ export async function checkGallery(browser, origin, engine) {
   assert.equal(await dataPage.locator('.gallery-preview[src]').count(), 0);
   await dataPage.locator('.gallery-open').first().click();
   await dataPage.locator('.work-viewer[open]').waitFor();
-  await dataPage.locator('.work-viewer[open] video').first().evaluate(async video => { video.muted = true; await video.play(); });
-  await dataPage.waitForFunction(() => document.querySelector('dialog[open] video').currentTime > .1);
+  await playViewer(dataPage);
   await dataSaving.close();
   // Embedded browsers may report no hover capability or reject WebM playback.
   const embedded = await browser.newContext({ viewport: { width: 1440, height: 900 }, reducedMotion: 'no-preference' });

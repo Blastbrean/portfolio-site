@@ -52,7 +52,7 @@ const sourcesFor = (cover: PreparedMedia) => [...new Map([[320, cover.small], [6
             <button type="button" data-work-close autofocus>Close</button>
           </div>
           <div class="viewer-media">
-            {work.image && (image?.animated ? <video controls muted playsinline preload="none" data-viewer-source={image.animation} data-viewer-poster={image.poster} aria-label={`${work.title} animation`} aria-description={work.imageAlt ?? work.summary} loop><a href={work.image}>Original animation</a></video> : <img data-viewer-source={image?.full ?? work.image} width={image?.width} height={image?.height} alt={work.imageAlt ?? ''} decoding="async" />)}
+            {work.image && (image?.animated ? <video controls muted playsinline preload="none" data-viewer-fallback={work.image} data-viewer-source={image.animation} data-viewer-poster={image.poster} aria-label={`${work.title} animation`} aria-description={work.imageAlt ?? work.summary} loop><a href={work.image}>Original animation</a></video> : <img data-viewer-source={image?.full ?? work.image} width={image?.width} height={image?.height} alt={work.imageAlt ?? ''} decoding="async" />)}
             {work.video && <video controls playsinline preload="none" data-viewer-source={work.video} data-viewer-poster={media[work.videoPoster ?? '']?.poster ?? work.videoPoster ?? cover?.poster} aria-label={`${work.title} video`}>
               {work.videoCaptions && <track kind="captions" data-viewer-source={work.videoCaptions} srclang="en" label="English" default />}
               <a href={work.video}>Download video</a>
