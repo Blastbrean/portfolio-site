@@ -8,5 +8,5 @@ description: Find blastbrean’s code on Forgejo and GitHub.
 
 - [Forgejo](https://git.blastbrean.com) - My public Forgejo instance
 - [My Code](https://git.blastbrean.com/blastbrean) - Where I store my personal & public projects
-- [Lycoris Code](https://git.blastbrean.com/lycoris) - Lycoris's full source code: infrastructure & script wise
+- [Lycoris Code](https://git.blastbrean.com/lycoris) - My full work in this company
 - [GitHub](https://github.com/Blastbrean) - Where I collaborate with others

@@ -4,13 +4,15 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "node scripts/sync-music.mjs --if-needed && astro dev",
-    "build": "node scripts/sync-music.mjs --if-needed && astro build",
+    "dev": "node scripts/sync-music.mjs --if-needed && node scripts/prepare-work.mjs && astro dev",
+    "build": "node scripts/sync-music.mjs --if-needed && node scripts/prepare-work.mjs && astro build",
     "preview": "astro preview",
-    "check:visual": "node scripts/sync-music.mjs --if-needed && astro build && node scripts/check-visuals.mjs",
+    "check:visual": "node scripts/sync-music.mjs --if-needed && node scripts/prepare-work.mjs && astro build && node scripts/check-visuals.mjs",
     "browser:install": "playwright install chromium",
     "sync:music": "node scripts/sync-music.mjs",
-    "check:safari": "node scripts/sync-music.mjs --if-needed && astro build && node scripts/check-visuals.mjs --webkit --navigation"
+    "check:safari": "node scripts/sync-music.mjs --if-needed && node scripts/prepare-work.mjs && astro build && node scripts/check-visuals.mjs --webkit --navigation",
+    "check:accessibility": "pnpm build && node scripts/check-visuals.mjs --accessibility",
+    "prepare:work": "node scripts/prepare-work.mjs"
   },
   "engines": {
     "node": ">=24 <25"
@@ -19,6 +21,10 @@
     "astro": "^7.4.2"
   },
   "devDependencies": {
-    "playwright": "^1.64.1"
+    "@axe-core/playwright": "^4.14.0",
+    "gifenc": "^1.0.3",
+    "playwright": "^1.64.1",
+    "sharp": "^0.35.5",
+    "yaml": "^2.9.1"
   }
 }

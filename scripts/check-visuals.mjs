@@ -1,5 +1,9 @@
 import { chromium, webkit } from 'playwright';
+import { checkAccessibility } from './check-accessibility.mjs';
+import { checkGallery } from './check-gallery.mjs';
+import { checkTimeline } from './check-timeline.mjs';
 import { checkNavigation } from './check-navigation.mjs';
+import { checkBackgroundControls } from './check-background-controls.mjs';
 import { createServer } from 'node:http';
 import { readFile, mkdir } from 'node:fs/promises';
 import { resolve, extname, sep } from 'node:path';
@@ -8,7 +12,7 @@ import assert from 'node:assert/strict';
 // Serve the production build on an ephemeral loopback port; no deployment needed.
 const root = resolve('dist');
 const output = resolve('.preview');
-const types = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml', '.png': 'image/png', '.webp': 'image/webp', '.mp4': 'video/mp4', '.vtt': 'text/vtt', '.woff2': 'font/woff2', '.jpg': 'image/jpeg' };
+const types = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml', '.png': 'image/png', '.webp': 'image/webp', '.mp4': 'video/mp4', '.webm': 'video/webm', '.vtt': 'text/vtt', '.woff2': 'font/woff2', '.jpg': 'image/jpeg' };
 const server = createServer(async (request, response) => {
   try {
     let pathname = decodeURIComponent(new URL(request.url, 'http://localhost').pathname);
@@ -44,6 +48,12 @@ try {
   }
   await crawler.close();
   console.log(`${engineName}: Discord metadata and preview image passed without JavaScript.`);
+  if (process.argv.includes('--accessibility')) {
+    await checkAccessibility(browser, origin);
+  } else {
+  await checkBackgroundControls(browser, origin, engineName);
+  await checkTimeline(browser, origin, engineName);
+  await checkGallery(browser, origin, engineName);
   if (process.argv.includes('--navigation')) {
     await checkNavigation(browser, origin, output, engineName);
   } else {
@@ -125,6 +135,7 @@ try {
   await loadingContext.close();
   await checkNavigation(browser, origin, output, engineName);
   console.log(`Passed ${checks} page/theme/viewport checks plus ${intermediateChecks} intermediate/landscape layout checks, saved theme overrides, live system changes, diagonal grid movement, Space shortcut, reduced motion, and uninterrupted background navigation. Screenshots: ${output}`);
+  }
   }
 } finally {
   await browser?.close();

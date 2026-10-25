@@ -6,7 +6,7 @@ ageFallback: 17
 
 # blastbrean (he/him)
 
-I'm a {{age}} year old software engineer from California, USA. To quickly explain who I am: *I love music, cars, shows, YouTube, movies, anime, gaming, guns, food, traveling, and most importantly - to have a good time. Also, I'm Asian-American.*
+I'm a {{age}} year old software engineer from California, USA. To quickly explain who I am: *I love music, cars, shows, YouTube, movies, anime & manga, gaming, guns, food, traveling, and most importantly - to have a good time. Also, I'm Asian-American.*
 
 I love building things in general, from automation and gaming, to reverse engineering and hardware. I have been encorporating AI (ChatGPT, Claude) as a tool to help me become the best developer I can, not as a crutch.
 

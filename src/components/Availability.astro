@@ -1,0 +1,42 @@
+---
+const { schedule } = Astro.props;
+---
+<div class="availability" data-schedule={JSON.stringify(schedule)}>
+  <p class="current-availability">
+    <strong data-availability-status role="status">Pacific-time availability</strong>
+    <span data-pacific-clock></span>
+  </p>
+  <noscript>Enable JavaScript to see my current likely availability.</noscript>
+</div>
+<script>
+  import { availabilityAt } from '../lib/availability.mjs';
+  const update = () => {
+    const container = document.querySelector<HTMLElement>('.availability');
+    const status = container?.querySelector<HTMLElement>('[data-availability-status]');
+    if (!status || !container) return;
+    const schedule = JSON.parse(container.dataset.schedule!);
+    const now = new Date();
+    const available = availabilityAt(schedule, now);
+    const label = available ? 'Likely available' : 'Likely unavailable';
+    if (status.textContent !== label) status.textContent = label;
+    status.dataset.available = String(available);
+    const time = container.querySelector('[data-pacific-clock]');
+    if (time) time.textContent = `Currently ${new Intl.DateTimeFormat('en-US', {
+      timeZone: schedule.timeZone, weekday: 'long', hour: 'numeric', minute: '2-digit', timeZoneName: 'short',
+    }).format(now)}`;
+  };
+  update();
+  document.addEventListener('astro:page-load', update);
+  document.addEventListener('visibilitychange', update);
+  setInterval(update, 15_000);
+</script>
+<style>
+  .current-availability { margin-bottom: 0.5rem; }
+  [data-availability-status]::before {
+    content: ''; display: inline-block; width: 0.55em; height: 0.55em;
+    border-radius: 50%; background: var(--muted); margin-right: 0.5em;
+  }
+  [data-available="true"]::before { background: #759e80; }
+  [data-available="false"]::before { background: #bd8e9b; }
+  [data-pacific-clock] { display: block; font-size: 0.9rem; color: var(--muted); }
+</style>

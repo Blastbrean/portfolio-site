@@ -28,20 +28,65 @@ import catalog from "../data/music-catalog.json";
     let lastTime: number | undefined;
     let distance = 0;
     let phase = 0;
+    let verticalPeriod = 0;
+    let panX = 0;
+    let panY = 0;
+    let rotation = 45;
+    let speed = 1;
+    let shortcuts = true;
+    try { shortcuts = localStorage.getItem('blastbrean-shortcuts') !== 'off'; } catch {}
     let navigating = false;
+    const held = new Set<string>();
+    const controls = new Set(['KeyW', 'KeyA', 'KeyS', 'KeyD', 'ArrowLeft', 'ArrowRight', 'Equal', 'Minus', 'BracketLeft', 'BracketRight']);
+    const interactive = 'dialog[open], input, textarea, select, button, a, video, audio, summary, [contenteditable]:not([contenteditable="false"]), [role="button"], [role="textbox"], [role="combobox"]';
+    const wrap = (value: number, period: number) => ((value % period) + period) % period;
+    const paint = () => {
+      if (!distance || !verticalPeriod) return;
+      const x = wrap(phase + panX, distance) - distance / 2;
+      const y = wrap(panY + verticalPeriod / 2, verticalPeriod) - verticalPeriod / 2;
+      grid.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+      background.style.setProperty('--rotation', `${rotation}deg`);
+    };
     const draw = (time: number) => {
       frame = undefined;
-      if (paused || document.hidden || navigating || !distance) {
+      if ((paused && !held.size) || document.hidden || navigating || !distance) {
         lastTime = undefined;
         return;
       }
       if (lastTime !== undefined) {
         // Resume from the same position after a stall or a hidden tab.
-        phase = (phase + Math.min(Math.max(time - lastTime, 0), 64) * 0.022) % distance;
+        const delta = Math.min(Math.max(time - lastTime, 0), 64) / 1000;
+        const horizontal = Number(held.has('KeyD')) - Number(held.has('KeyA'));
+        const vertical = Number(held.has('KeyS')) - Number(held.has('KeyW'));
+        const length = Math.hypot(horizontal, vertical) || 1;
+        speed = Math.min(20, Math.max(0.1, speed + (Number(held.has('BracketRight')) - Number(held.has('BracketLeft'))) * delta));
+        const x = horizontal / length * 180 * delta * speed;
+        const y = vertical / length * 180 * delta * speed;
+        const angle = rotation * Math.PI / 180;
+        panX = wrap(panX + x * Math.cos(angle) + y * Math.sin(angle), distance);
+        panY = wrap(panY - x * Math.sin(angle) + y * Math.cos(angle), verticalPeriod);
+        const direction = Number(held.has('ArrowRight')) - Number(held.has('ArrowLeft'));
+        phase = wrap(phase + ((paused ? 0 : 22) + direction * 180) * delta * speed, distance);
+        rotation = wrap(rotation + (Number(held.has('Equal')) - Number(held.has('Minus'))) * 24 * delta * speed, 360);
       }
       lastTime = time;
-      grid.style.transform = `translate3d(${phase - distance / 2}px, 0, 0)`;
+      paint();
+      if (held.has('BracketLeft') || held.has('BracketRight')) updateControls();
       frame = requestAnimationFrame(draw);
+    };
+    const updateControls = () => {
+      background.dataset.speed = speed.toFixed(2);
+      const options = document.querySelector<HTMLElement>('[data-background-options]');
+      if (options) options.hidden = false;
+      const setting = document.querySelector<HTMLInputElement>('#background-shortcuts');
+      if (setting) setting.checked = shortcuts;
+      const slider = document.querySelector<HTMLInputElement>('#background-speed');
+      if (slider) {
+        slider.value = String(speed);
+        slider.setAttribute('aria-valuetext', `${speed.toFixed(1)} times normal speed`);
+      }
+      const output = document.querySelector('#background-speed-value');
+      if (output && output.textContent !== `${speed.toFixed(1)}×`) output.textContent = `${speed.toFixed(1)}×`;
     };
     const sync = () => {
       const toggle =
@@ -51,11 +96,13 @@ import catalog from "../data/music-catalog.json";
         toggle.textContent = paused ? "Resume background" : "Pause background";
         toggle.setAttribute("aria-pressed", String(paused));
         toggle.setAttribute("aria-keyshortcuts", "Space");
-        toggle.title = "Space pauses or resumes the background";
+        toggle.title = shortcuts ? "Space pauses or resumes the background" : "Pause or resume the background";
       }
       const stopped = paused || document.hidden || navigating;
       background.dataset.paused = String(stopped);
-      if (stopped) {
+      document.documentElement.dataset.motionPaused = String(paused || reducedMotion.matches);
+      updateControls();
+      if (document.hidden || navigating || (paused && !held.size)) {
         if (frame !== undefined) cancelAnimationFrame(frame);
         frame = undefined;
         lastTime = undefined;
@@ -69,32 +116,56 @@ import catalog from "../data/music-catalog.json";
         sync();
       }
     });
+    document.addEventListener('change', (event) => {
+      const target = event.target as HTMLInputElement;
+      if (target.id !== 'background-shortcuts') return;
+      shortcuts = target.checked;
+      held.clear();
+      try { localStorage.setItem('blastbrean-shortcuts', shortcuts ? 'on' : 'off'); } catch {}
+      sync();
+    });
+    document.addEventListener('input', (event) => {
+      const target = event.target as HTMLInputElement;
+      if (target.id !== 'background-speed') return;
+      speed = Math.min(20, Math.max(0.1, Number(target.value)));
+      updateControls();
+    });
     document.addEventListener("keydown", (event) => {
       if (
-        event.code !== "Space" ||
-        event.repeat ||
+        !shortcuts || event.isComposing || event.defaultPrevented ||
         event.ctrlKey ||
         event.metaKey ||
-        event.altKey ||
-        event.shiftKey
+        event.altKey
       )
         return;
       const target = event.target as HTMLElement;
-      if (
-        target.closest(
-          'input, textarea, select, button, a, video, audio, summary, [contenteditable]:not([contenteditable="false"]), [role="button"], [role="textbox"], [role="combobox"]',
-        )
-      )
+      if (target.closest(interactive)) return;
+      if (event.code === 'Space') {
+        if (event.repeat || event.shiftKey) return;
+        event.preventDefault();
+        paused = !paused;
+        sync();
         return;
+      }
+      if (!distance || !controls.has(event.code)) return;
       event.preventDefault();
-      paused = !paused;
+      held.add(event.code);
       sync();
+    });
+    document.addEventListener('keyup', (event) => {
+      if (held.delete(event.code)) sync();
+    });
+    const releaseControls = () => { held.clear(); sync(); };
+    window.addEventListener('blur', releaseControls);
+    document.addEventListener('focusin', (event) => {
+      if ((event.target as Element)?.closest(interactive)) releaseControls();
     });
     reducedMotion.addEventListener("change", () => {
       paused = reducedMotion.matches;
       sync();
     });
     const restart = () => {
+      held.clear();
       if (frame !== undefined) cancelAnimationFrame(frame);
       frame = undefined;
       lastTime = undefined;
@@ -105,6 +176,7 @@ import catalog from "../data/music-catalog.json";
     window.addEventListener("pageshow", restart);
     document.addEventListener("astro:before-swap", () => {
       navigating = true;
+      held.clear();
       sync();
     });
     // Schedule on the new document after Safari moves the persistent element.
@@ -183,7 +255,8 @@ import catalog from "../data/music-catalog.json";
       grid.style.backgroundSize = `${columns * 220}px ${rows * 220}px`;
       grid.style.backgroundImage = `url("${canvas.toDataURL("image/webp", 0.75)}")`;
       distance = columns * 220;
-      grid.style.transform = `translate3d(${-distance / 2}px, 0, 0)`;
+      verticalPeriod = rows * 220;
+      paint();
       sync();
       background.dataset.loadedCount = String(images.length);
       background.dataset.ready = "true";
@@ -209,7 +282,7 @@ import catalog from "../data/music-catalog.json";
     left: 50%;
     width: calc(150vmax + var(--period));
     height: calc(150vmax + var(--period));
-    transform: translate(-50%, -50%) rotate(45deg);
+    transform: translate(-50%, -50%) rotate(var(--rotation, 45deg));
     opacity: 0;
     transition: opacity 600ms ease;
   }

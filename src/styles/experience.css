@@ -1,13 +1,17 @@
-/* A quiet curved rail beside each entry; only the narrow highlight is animated. */
+/* Fully filled pastel rail; the colors follow scrolling. */
 .experience-timeline {
-  --timeline-line: #9d829d;
-  --timeline-highlight: #f2c6da;
-  --timeline-dot: #d6c5ed;
+  --timeline-line: #b69ab7;
+  --timeline-highlight: #f2a7cf;
+  --timeline-blue: #9bbcf9;
+  --timeline-end: #a4ebcf;
+  --timeline-dot: #d9c3ff;
 }
 :root[data-theme="light"] .experience-timeline {
   --timeline-line: #9b899f;
-  --timeline-highlight: #b47e9b;
-  --timeline-dot: #aa91ba;
+  --timeline-highlight: #af5284;
+  --timeline-blue: #567cab;
+  --timeline-end: #3f8976;
+  --timeline-dot: #8761ad;
 }
 .experience-entry {
   position: relative;
@@ -23,15 +27,15 @@
   left: 0;
   width: 1.5rem;
   pointer-events: none;
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 400' preserveAspectRatio='none'%3E%3Cpath d='M12 0 C-2 65 26 135 12 200 S-2 335 12 400' fill='none' stroke='black' stroke-width='2' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 400' preserveAspectRatio='none'%3E%3Cpath d='M12 0 C-2 65 26 135 12 200 S-2 335 12 400' fill='none' stroke='black' stroke-width='4.5' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
 }
 .experience-entry::before {
   background: var(--timeline-line);
-  opacity: 0.65;
+  opacity: 0.35;
 }
 .experience-entry::after {
-  background: linear-gradient(to bottom, transparent, var(--timeline-highlight), transparent) 0 0 / 100% 12rem repeat-y;
-  animation: timeline-flow 10s linear infinite;
+  background: linear-gradient(to bottom, var(--timeline-highlight) 0%, var(--timeline-dot) 25%, var(--timeline-blue) 50%, var(--timeline-end) 75%, var(--timeline-highlight) 100%) 0 0 / 100% 18rem repeat-y;
+  background-position-y: var(--timeline-shift, 0px);
 }
 .experience-entry:last-child::before,
 .experience-entry:last-child::after { bottom: 0; }
@@ -48,11 +52,8 @@
   box-shadow: 0 0 0 4px var(--background);
   z-index: 1;
 }
-@keyframes timeline-flow {
-  to { background-position-y: 12rem; }
-}
 @media (prefers-reduced-motion: reduce) {
-  .experience-entry::after { animation: none; }
+  .experience-entry::after { background-position-y: 0; }
 }
 @media (max-width: 40rem) {
   .experience-entry { padding-left: 1.9rem; }

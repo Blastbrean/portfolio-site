@@ -113,7 +113,7 @@ export async function checkNavigation(browser, origin, output, engine = 'chromiu
         for (const label of ['Work', 'Home', 'Projects', 'Contact']) {
           await page.getByRole('navigation').getByRole('link', { name: label, exact: true }).click();
           await page.waitForFunction(expected => document.querySelector('nav [aria-current="page"]')?.textContent.trim() === expected, label);
-          await page.waitForFunction(() => !document.getAnimations().length);
+          await page.waitForFunction(() => document.getAnimations().every(animation => animation.effect?.getComputedTiming().iterations === Infinity));
           assert.ok(await page.evaluate(() => refreshBackground === document.querySelector('.personal-background')));
           assert.equal(await page.locator('main').evaluate(element => getComputedStyle(element).viewTransitionName), 'none');
           assert.equal(await page.locator('html').getAttribute('data-theme'), chosenTheme);

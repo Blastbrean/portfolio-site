@@ -1,0 +1,96 @@
+{
+  "/media/work/demos/frames.webp": {
+    "hash": "a2cf50031c56aa96",
+    "width": 720,
+    "height": 300,
+    "animated": true,
+    "small": "/media/work/optimized/a2cf50031c56aa96-320.webp",
+    "poster": "/media/work/optimized/a2cf50031c56aa96-640.webp",
+    "large": "/media/work/optimized/a2cf50031c56aa96-720.webp",
+    "full": "/media/work/optimized/a2cf50031c56aa96-720.webp",
+    "preview": "/media/work/optimized/a2cf50031c56aa96-preview.webm",
+    "animation": "/media/work/optimized/a2cf50031c56aa96-preview.webm"
+  },
+  "/media/work/demos/movement.webp": {
+    "hash": "bef97b1c426854ea",
+    "width": 480,
+    "height": 640,
+    "animated": true,
+    "small": "/media/work/optimized/bef97b1c426854ea-320.webp",
+    "poster": "/media/work/optimized/bef97b1c426854ea-480.webp",
+    "large": "/media/work/optimized/bef97b1c426854ea-480.webp",
+    "full": "/media/work/optimized/bef97b1c426854ea-480.webp",
+    "preview": "/media/work/optimized/bef97b1c426854ea-preview.webm",
+    "animation": "/media/work/optimized/bef97b1c426854ea-preview.webm"
+  },
+  "/media/work/demos/network.webp": {
+    "hash": "8ee41cac6c7e8de8",
+    "width": 480,
+    "height": 480,
+    "animated": true,
+    "small": "/media/work/optimized/8ee41cac6c7e8de8-320.webp",
+    "poster": "/media/work/optimized/8ee41cac6c7e8de8-480.webp",
+    "large": "/media/work/optimized/8ee41cac6c7e8de8-480.webp",
+    "full": "/media/work/optimized/8ee41cac6c7e8de8-480.webp",
+    "preview": "/media/work/optimized/8ee41cac6c7e8de8-preview.webm",
+    "animation": "/media/work/optimized/8ee41cac6c7e8de8-preview.webm"
+  },
+  "/media/work/demos/pose.gif": {
+    "hash": "412b3797e140b2c8",
+    "width": 360,
+    "height": 480,
+    "animated": true,
+    "small": "/media/work/optimized/412b3797e140b2c8-320.webp",
+    "poster": "/media/work/optimized/412b3797e140b2c8-360.webp",
+    "large": "/media/work/optimized/412b3797e140b2c8-360.webp",
+    "full": "/media/work/optimized/412b3797e140b2c8-360.webp",
+    "preview": "/media/work/optimized/412b3797e140b2c8-preview.webm",
+    "animation": "/media/work/optimized/412b3797e140b2c8-preview.webm"
+  },
+  "/media/work/demos/terminal.gif": {
+    "hash": "823c3a9d31af5388",
+    "width": 480,
+    "height": 360,
+    "animated": true,
+    "small": "/media/work/optimized/823c3a9d31af5388-320.webp",
+    "poster": "/media/work/optimized/823c3a9d31af5388-480.webp",
+    "large": "/media/work/optimized/823c3a9d31af5388-480.webp",
+    "full": "/media/work/optimized/823c3a9d31af5388-480.webp",
+    "preview": "/media/work/optimized/823c3a9d31af5388-preview.webm",
+    "animation": "/media/work/optimized/823c3a9d31af5388-preview.webm"
+  },
+  "/media/work/demos/trace.webp": {
+    "hash": "e3a780a4677fb538",
+    "width": 400,
+    "height": 600,
+    "animated": true,
+    "small": "/media/work/optimized/e3a780a4677fb538-320.webp",
+    "poster": "/media/work/optimized/e3a780a4677fb538-400.webp",
+    "large": "/media/work/optimized/e3a780a4677fb538-400.webp",
+    "full": "/media/work/optimized/e3a780a4677fb538-400.webp",
+    "preview": "/media/work/optimized/e3a780a4677fb538-preview.webm",
+    "animation": "/media/work/optimized/e3a780a4677fb538-preview.webm"
+  },
+  "/media/work/demos/dashboard.webp": {
+    "hash": "5622d043bbdb70d3",
+    "width": 640,
+    "height": 360,
+    "animated": true,
+    "small": "/media/work/optimized/5622d043bbdb70d3-320.webp",
+    "poster": "/media/work/optimized/5622d043bbdb70d3-640.webp",
+    "large": "/media/work/optimized/5622d043bbdb70d3-640.webp",
+    "full": "/media/work/optimized/5622d043bbdb70d3-640.webp",
+    "preview": "/media/work/optimized/5622d043bbdb70d3-preview.webm",
+    "animation": "/media/work/optimized/5622d043bbdb70d3-preview.webm"
+  },
+  "/media/work/example-poster.png": {
+    "hash": "64f526e5abb07057",
+    "width": 960,
+    "height": 540,
+    "animated": false,
+    "small": "/media/work/optimized/64f526e5abb07057-320.webp",
+    "poster": "/media/work/optimized/64f526e5abb07057-640.webp",
+    "large": "/media/work/optimized/64f526e5abb07057-960.webp",
+    "full": "/media/work/optimized/64f526e5abb07057-960.webp"
+  }
+}

@@ -1,0 +1,13 @@
+---
+import Page from './Page.astro';
+import Availability from '../components/Availability.astro';
+import { scheduleFromText } from '../lib/availability.mjs';
+const content = await Astro.slots.render('default');
+const schedule = scheduleFromText(content);
+const [before, after = ''] = content.split('<!-- availability -->');
+---
+<Page frontmatter={Astro.props.frontmatter}>
+  <Fragment set:html={before} />
+  <Availability schedule={schedule} />
+  <Fragment set:html={after} />
+</Page>

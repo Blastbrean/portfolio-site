@@ -1,8 +1,10 @@
 ---
 import type { MarkdownInstance } from 'astro';
 import Page from './Page.astro';
+import preparedMedia from '../data/work-media.json';
 interface WorkEntry {
   title: string;
+  summary?: string;
   draft?: boolean;
   order?: number;
   image?: string;
@@ -11,35 +13,88 @@ interface WorkEntry {
   videoPoster?: string;
   videoCaptions?: string;
   repository?: string;
+  preview?: string;
+  previewMode?: 'hover' | 'manual' | 'none';
 }
+interface PreparedMedia {
+  width: number; height: number; animated: boolean;
+  small: string; poster: string; large: string; full: string;
+  preview?: string; animation?: string;
+}
+const media = preparedMedia as Record<string, PreparedMedia>;
 const entries = Object.values(import.meta.glob<MarkdownInstance<WorkEntry>>('../work/*.md', { eager: true }))
   .filter(({ frontmatter }) => frontmatter.draft !== true)
   .sort((a, b) => (a.frontmatter.order ?? 0) - (b.frontmatter.order ?? 0) || a.frontmatter.title.localeCompare(b.frontmatter.title));
+const coverFor = (work: WorkEntry) => media[work.image ?? work.videoPoster ?? ''];
+const sourcesFor = (cover: PreparedMedia) => [...new Map([[320, cover.small], [640, cover.poster], [1280, cover.large]].map(([size, url]) => [Math.min(Number(size), cover.width), url])).entries()].map(([width, url]) => `${url} ${width}w`).join(', ');
 ---
 <Page frontmatter={Astro.props.frontmatter}>
-  <slot />
+  <div class="work-intro"><slot /></div>
   {entries.length === 0 && <p class="empty">No work samples published yet.</p>}
-  <div class="gallery">
-    {entries.map(({ frontmatter: work, Content }) => (
-      <article class="work-entry">
-        {work.image && <img src={work.image} alt={work.imageAlt ?? ''} loading="lazy" />}
-        {work.video && (
-          <video controls playsinline preload="metadata" poster={work.videoPoster} aria-label={work.title}>
-            <source src={work.video} />
-            {work.videoCaptions && <track kind="captions" src={work.videoCaptions} srclang="en" label="English" default />}
-            <a href={work.video}>Download video</a>
-          </video>
-        )}
-        <h2>{work.title}</h2>
-        <Content />
-        {work.repository && <p><a href={work.repository}>Source code</a></p>}
+  <div class="gallery work-gallery">
+    {entries.map(({ frontmatter: work, Content }, index) => {
+      const cover = coverFor(work);
+      const image = work.image ? media[work.image] : undefined;
+      const preview = work.previewMode && work.previewMode !== 'hover' ? undefined : work.preview ?? (cover?.animated ? cover.preview : work.video);
+      return (
+      <article class="work-entry" data-work-card data-preview-image={cover?.animated ? work.image : undefined} data-preview-mode={work.previewMode ?? 'hover'}>
+        <a class="gallery-open" href={work.image ?? work.video ?? work.repository ?? `#work-sample-${index}`} data-astro-reload data-astro-prefetch="false" data-work-open={`work-sample-${index}`} aria-label={`View ${work.title}`}>
+          <div class="gallery-thumbnail">
+            {cover ? <img class="gallery-poster" src={cover.poster} srcset={sourcesFor(cover)} sizes={cover.width / cover.height > 1.9 ? "(min-width: 64rem) 64vw, (min-width: 38rem) 96vw, 100vw" : "(min-width: 64rem) 32vw, (min-width: 38rem) 48vw, 100vw"} width={cover.width} height={cover.height} alt="" loading="lazy" decoding="async" /> : <span class="thumbnail-placeholder" aria-hidden="true"></span>}
+            {preview && cover?.animated && <img class="gallery-animation" alt="" aria-hidden="true" decoding="async" />}
+            {preview && <video class="gallery-preview" data-preview-source={preview} muted loop playsinline preload="none" aria-hidden="true" tabindex="-1" disablepictureinpicture></video>}
+          </div>
+        </a>
+        <noscript><Content />{work.video && <p><a href={work.video}>Watch video</a></p>}{work.repository && <p><a href={work.repository}>Source code</a></p>}</noscript>
+        <dialog class="work-viewer" id={`work-sample-${index}`} aria-labelledby={`work-title-${index}`}>
+          <div class="viewer-header">
+            <h2 id={`work-title-${index}`}>{work.title}</h2>
+            <button type="button" data-work-close autofocus>Close</button>
+          </div>
+          <div class="viewer-media">
+            {work.image && (image?.animated ? <video controls muted playsinline preload="none" data-viewer-source={image.animation} data-viewer-poster={image.poster} aria-label={`${work.title} animation`} aria-description={work.imageAlt ?? work.summary} loop><a href={work.image}>Original animation</a></video> : <img data-viewer-source={image?.full ?? work.image} width={image?.width} height={image?.height} alt={work.imageAlt ?? ''} decoding="async" />)}
+            {work.video && <video controls playsinline preload="none" data-viewer-source={work.video} data-viewer-poster={media[work.videoPoster ?? '']?.poster ?? work.videoPoster ?? cover?.poster} aria-label={`${work.title} video`}>
+              {work.videoCaptions && <track kind="captions" data-viewer-source={work.videoCaptions} srclang="en" label="English" default />}
+              <a href={work.video}>Download video</a>
+            </video>}
+          </div>
+          <div class="viewer-description"><Content /></div>
+          {work.repository && <p><a href={work.repository}>Source code</a></p>}
+        </dialog>
       </article>
-    ))}
+    );})}
   </div>
 </Page>
-<style>
-  .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 28rem), 1fr)); gap: 3rem 2rem; margin-top: 2rem; }
-  .work-entry { min-width: 0; border-top: 1px solid var(--border); padding-top: 1.5rem; }
-  .work-entry h2 { margin-top: 1rem; }
-  .work-entry img, .work-entry video { width: 100%; max-height: 32rem; object-fit: contain; background: var(--surface); }
+<script>
+  import '../scripts/work-gallery';
+</script>
+<style is:global>
+  html:has(.work-viewer[open]) { overflow: hidden; }
+  body:has(.work-gallery) { max-width: 80rem; }
+  body:has(.work-gallery) > header, body:has(.work-gallery) > footer, .work-intro { max-width: 48rem; width: 100%; margin-inline: auto; }
+  .work-gallery { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 2rem; }
+  .work-entry { position: relative; min-width: 0; width: calc((100% - 24px) / 3); align-self: start; }
+  .gallery-open { display: block; text-decoration: none; }
+  .gallery-thumbnail { position: relative; display: block; overflow: hidden; background: #161a20; }
+  .gallery-poster { display: block; width: 100%; height: auto; filter: grayscale(1); }
+  [data-preview-engaged="true"] .gallery-poster { filter: none; }
+  .gallery-animation { display: none; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+  .gallery-animation[src] { display: block; }
+  .gallery-preview { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0; pointer-events: none; }
+  [data-previewing="true"] .gallery-preview { opacity: 1; }
+  .thumbnail-placeholder { display: block; aspect-ratio: 4 / 3; background: #777; }
+  .work-viewer { width: min(60rem, calc(100% - 2rem)); max-height: calc(100svh - 2rem); max-width: none; padding: 1.5rem; color: var(--text); background: var(--background); border: 1px solid var(--border); overflow-y: auto; overflow-wrap: anywhere; }
+  .work-viewer::backdrop { background: #000b; }
+  .viewer-header { position: sticky; top: -1.5rem; z-index: 1; display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem; padding: 0.5rem 0; background: var(--background); }
+  .viewer-header h2 { margin: 0; font-size: 1.35rem; }
+  .viewer-header button { font: inherit; color: var(--link); background: var(--surface); border: 1px solid var(--border); padding: 0.5rem 0.75rem; cursor: pointer; }
+  .viewer-media { display: grid; gap: 1rem; }
+  .viewer-media img, .viewer-media video { width: 100%; max-height: 65svh; object-fit: contain; background: var(--surface); }
+  .viewer-description { margin-top: 1.5rem; }
+  @media (max-width: 64rem) { .work-entry { width: calc((100% - 12px) / 2); } }
+  @media (max-width: 38rem) {
+    .work-entry { width: 100%; }
+    .work-viewer { padding: 1rem; }
+    .viewer-header { top: -1rem; }
+  }
 </style>

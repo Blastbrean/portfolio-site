@@ -1,5 +1,5 @@
 ---
-layout: ../layouts/Page.astro
+layout: ../layouts/Contact.astro
 title: Contact
 ---
 
@@ -7,13 +7,15 @@ title: Contact
 
 These two forms of contact are the only ways to reach me.
 
-Email me at: `business@blastbrean.com`
+Email me at: [business@blastbrean.com](mailto:business@blastbrean.com)
 
-My discord: `therealblastbrean` (1535312550479003660)
+My discord: [therealblastbrean](https://discord.com/users/1535312550479003660) (1535312550479003660)
 
 I respond and check both actively.
 
 ## Timezone & availability
+
+<!-- availability -->
 
 12h -- https://time.is/PT or https://time.is/PST
 
@@ -27,7 +29,7 @@ Monday & Thursday: `7:30am - 9:00am` U `10:16am - 1:59pm` U `3:25pm - 10pm`
 
 Wednesday: `2:30pm - 10pm`
 
-Tuesday & Friday: `7:30am - 9:00am` U `10:16am - 11:06am` U `1:30pm - 10pm`
+Tuesday & Friday: `7:30am - 9:00am` U `10:16am - 11:06am` U `1:30pm - 1am`
 
 Saturday & Sunday: `6am - 1am`
 
@@ -35,7 +37,7 @@ Saturday & Sunday: `6am - 1am`
 
 Specifically, for requesting me to do coding for money:
 
-- Payment: It must be clearly stated. Partial pay or you go first only. We deal in PayPal Business.
+- Payment: It must be clearly stated. Partial pay or you go first only. I accept PayPal (business & services), Robux, and Cryptocurrency (Monero, LTC, BTC) only.
 
 - Scope: The full scope must be known. However, it is vague on what that is. In other words, simply, what should this do for me to receive your money in detail. I will iterate with you on that.
 
