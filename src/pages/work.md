@@ -5,20 +5,20 @@ title: Work
 
 # Work
 
-I have *worked* with many languages, libraries, frameworks, and tools to make many different types of software. A good software engineer knows many tools and has a diverse skillset. Every part of text that is bold here is something relevant that fits the criteria above.
+I've worked with many languages, libraries, frameworks, and tools to build different types of software. The ones in **bold** below are some of what I've used.
 
-If I were to single out one that I specialize most in, it would be **Luau scripting on Roblox.**
+If I were to single out what I specialize most in, it would be **Luau scripting on Roblox.**
 
-Next, I have worked a ton on the backend and creating serers. Using libraries like PocketBase or companies like MongoDB, I've setup servers and (Discord) bots using **Go, Rust, Python, and Node.JS.** 
+I've also worked a ton on backends, servers, and Discord bots using **Go, Rust, Python, and Node.js**, with tools like **PocketBase and MongoDB**.
 
-I'm still learning **IT / server skills** on Linux, but I have worked with **DigitalOcean** and different types of VPS, where I've used **Docker and Grafana for analytics.**
+I'm still learning more about **Linux and server administration**, but I've hosted projects on **DigitalOcean** and other VPS providers, using **Docker** to run services and **Grafana** for monitoring.
 
-Going on, I've worked a ton with obfuscation and deobfuscation using libraries like **Loretta and C#.** I also have successfully made a hand-coded IB2 deobfuscator **in Rust using `darklua`'s AST.**
+I've spent a lot of time on obfuscation and deobfuscation, including work with **C# and Loretta**. I also wrote an **IB2 deobfuscator in Rust using `darklua`'s AST**.
 
-In the background, I'm currently working on a **IR based on MLIR and the Luau source code in C++.** It converts Luau AST (source code) into IR where optimizations and analysis is done. From here, you can also convert it back into Luau source code for a full round-trip.
+In the background, I'm working on an **IR based on MLIR and the Luau source code in C++**. It converts Luau's AST into an intermediate representation for optimization and analysis, then back into Luau source code for a full round-trip.
 
-More recently, I have worked on many kinds of applications. I built many tools for myself which worked with using **Swift for MacOS, Kotlin for Android, and Python** to setup many automated tasks. These have allowed me to do things like syncing Google Tasks to Apple Reminders or syncing Spotify audio from my laptop to my phone through Bluetooth.
+More recently, I've built tools for myself using **Swift for macOS, Kotlin for Android, and Python**. These handle things like syncing Google Tasks to Apple Reminders or sending Spotify audio from my laptop to my phone over Bluetooth.
 
-In the future, I plan to work a lot more with **C++, Rust, C, and Python** for reverse engineering using tools like kernel drivers, IDA, and hypervisors.
+Next, I want to spend more time on reverse engineering with **C++, Rust, C, and Python**, and learn more about kernel drivers, IDA, and hypervisors.
 
-Below, you can see projects that I have worked on. If you click or tap on them, they can reveal more details like: if there is a public repository for them? Or, what they are exactly.
+Below are some projects I've worked on. Click or tap one to see what it does and find its public repository, if available.
