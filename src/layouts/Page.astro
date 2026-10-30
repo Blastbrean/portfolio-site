@@ -204,7 +204,7 @@ const previewImage = new URL(site.previewImage, Astro.site);
             >
           </div>
         </div>
-        <p>
+        <p class="background-shortcut-hint">
           WASD move · ← / → rewind / forward · = / - rotate · [ / ] speed ·
           Space pause
         </p>
@@ -332,6 +332,11 @@ const previewImage = new URL(site.previewImage, Astro.site);
     margin: 0.75rem 0 0;
     color: var(--muted);
     font-size: 0.8rem;
+  }
+  @media (hover: none) and (pointer: coarse) {
+    .shortcut-control, .background-shortcut-hint {
+      display: none;
+    }
   }
   .background-options input[type="checkbox"] {
     width: 1.1rem;

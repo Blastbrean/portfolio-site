@@ -39,8 +39,8 @@ Specifically, for requesting me to do coding for money:
 
 - Payment: It must be clearly stated. Partial pay or you go first only. I accept PayPal (business & services), Robux, and Cryptocurrency (Monero, LTC, BTC) only.
 
-- Scope: The full scope must be known. However, it is vague on what that is. In other words, simply, what should this do for me to receive your money in detail. I will iterate with you on that.
+- Scope: The full scope must be known. However, it is vague on what that is. In other words, simply: *what should this do for me to receive your money, in detail?* If you can't fully put it into words, I will iterate with you on that.
 
-- Budget: I will only work at a rate of 10-20$/hr+ depending on your budget. Please honestly tell me the most you will pay. I will cut you underneath that amount, and you're even able to bargain.
+- Budget: I usually work at a rate of 10-20$/hr+ depending on your budget. However, please honestly tell me the most you will pay. I will cut you underneath that amount, and you're even able to bargain.
 
-- Boundaries: I will not do work that is outside of my skillset like Building, Animation, SFX, and VFX because I cannot do so.
+- Boundaries: I will not do work that is outside of my skillset like building, animation, SFX, or VFX because I cannot do so.

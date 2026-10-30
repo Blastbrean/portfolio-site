@@ -30,6 +30,8 @@ const sourcesFor = (cover: PreparedMedia) => [...new Map([[320, cover.small], [6
 ---
 <Page frontmatter={Astro.props.frontmatter}>
   <div class="work-intro"><slot /></div>
+  <section class="work-samples" aria-labelledby="gallery-heading">
+  <h2 id="gallery-heading">Gallery</h2>
   {entries.length === 0 && <p class="empty">No work samples published yet.</p>}
   <div class="gallery work-gallery">
     {entries.map(({ frontmatter: work, Content }, index) => {
@@ -64,14 +66,15 @@ const sourcesFor = (cover: PreparedMedia) => [...new Map([[320, cover.small], [6
       </article>
     );})}
   </div>
+  </section>
 </Page>
 <script>
   import '../scripts/work-gallery';
 </script>
 <style is:global>
   html:has(.work-viewer[open]) { overflow: hidden; }
-  body:has(.work-gallery) > header, body:has(.work-gallery) > footer, .work-intro { max-width: 48rem; width: 100%; margin-inline: auto; }
-  .work-gallery { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 2rem; }
+  .work-samples { max-width: 68ch; width: 100%; }
+  .work-gallery { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 1.5rem; }
   .work-entry { position: relative; min-width: 0; width: calc((100% - 24px) / 3); align-self: start; }
   .gallery-open { display: block; text-decoration: none; }
   .gallery-thumbnail { position: relative; display: block; overflow: hidden; background: #161a20; }
